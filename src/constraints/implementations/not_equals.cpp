@@ -1,10 +1,10 @@
 #include "constraints/implementations/not_equals.h"
 
-NotEqualsConstraint::NotEqualsConstraint(IVariable* lhs, IVariable* rhs) 
+NotEqualsConstraint::NotEqualsConstraint(IVariable* lhs, IVariable* rhs) :
+    lhs(lhs),
+    rhs(rhs)
 {
     std::cout << "NotEqualsConstraint created" << std::endl;
-    this->lhs = lhs;
-    this->rhs = rhs;
 }
 
 void NotEqualsConstraint::propagate() 

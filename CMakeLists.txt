@@ -18,4 +18,6 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(munchkill ${SOURCES})
 
 target_link_libraries(munchkill PRIVATE fmt::fmt spdlog::spdlog)
-target_include_directories(munchkill PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(munchkill 
+	PRIVATE ${PROJECT_SOURCE_DIR}/include
+)

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <iostream>
-#include "../constraint.h"
-#include "../../variables/variable.h"
+#include "constraints/constraint.h"
+#include "variables/variable.h"
 
 class NotEqualsConstraint : public IConstraint
 {
 private:
-    IVariable* lhs;
-    IVariable* rhs;
+    const IVariable* lhs;
+    const IVariable* rhs;
 
 public:
     NotEqualsConstraint(IVariable* lhs, IVariable* rhs);

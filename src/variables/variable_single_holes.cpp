@@ -1,9 +1,11 @@
 #include "variables/variable_single_holes.h"
+#include "variables/variable.h"
 
-VariableSingleHoles::VariableSingleHoles(int lb, int ub) 
+VariableSingleHoles::VariableSingleHoles(int lb, int ub) :
+    lb(lb),
+    ub(ub)
 {
-    this->lb = lb;
-    this->ub = ub;
+
 }
 
 void VariableSingleHoles::remove(int value)

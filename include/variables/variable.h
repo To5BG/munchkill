@@ -1,5 +1,7 @@
 #pragma once
 
+class AtomicConstraint;
+
 /// @brief Interface for integer variables.
 class IVariable 
 {
@@ -22,4 +24,6 @@ public:
 
     /// @brief Get the upper bound of the variable.
     virtual int upperBound() = 0;
+
+    AtomicConstraint operator >=(int const& constant);
 };
