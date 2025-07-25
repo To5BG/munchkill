@@ -1,6 +1,8 @@
 #include <fmt/core.h>
 #include <spdlog/spdlog.h>
 
+#include "constraints/implementations/not_equals.h"
+
 int main()
 {
     // Print using fmt
@@ -14,6 +16,7 @@ int main()
     {
         return fmt::format("Hi, {}! Welcome to C++23 🎉", name);
     };
+    
     fmt::print("{}\n", greet("Munchkill"));
     return 0;
 }

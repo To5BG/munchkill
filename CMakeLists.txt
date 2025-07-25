@@ -14,6 +14,8 @@ endif()
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
-add_executable(munchkill main.cpp)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+add_executable(munchkill ${SOURCES})
 
 target_link_libraries(munchkill PRIVATE fmt::fmt spdlog::spdlog)
+target_include_directories(munchkill PRIVATE ${PROJECT_SOURCE_DIR}/include)
