@@ -1,6 +1,6 @@
 #pragma once
 
-class IConstraint 
+class IConstraint
 {
 public:
     virtual void propagate() = 0;

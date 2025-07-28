@@ -1,9 +1,9 @@
 #pragma once
 
-#include "variable.h"
+#include "variables/variable.h"
 #include <unordered_set>
 
-class VariableSingleHoles : public IVariable 
+class VariableSingleHoles : public IVariable
 {
 
 private:
