@@ -1,6 +1,6 @@
 #include "variables/variable_single_holes.h"
 #include "variables/variable.h"
-#include "constraints/implementations/atomic_constraint.h"
+#include "constraints/atomic_constraint.h"
 #include "utils/operator.h"
 
 VariableSingleHoles::VariableSingleHoles(int lb, int ub) :

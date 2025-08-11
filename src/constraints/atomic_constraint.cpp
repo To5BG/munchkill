@@ -1,4 +1,4 @@
-#include "constraints/implementations/atomic_constraint.h"
+#include "constraints/atomic_constraint.h"
 
 AtomicConstraint::AtomicConstraint(IVariable *var, Operator op, int constant) :
     var(var), 

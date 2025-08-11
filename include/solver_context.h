@@ -4,7 +4,7 @@
 #include <stack>
 #include "variables/variable.h"
 #include "constraints/constraint.h"
-#include "constraints/implementations/atomic_constraint.h"
+#include "constraints/atomic_constraint.h"
 
 class IVariable;
 class AtomicConstraint;

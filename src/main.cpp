@@ -1,7 +1,7 @@
 #include <fmt/core.h>
 #include <spdlog/spdlog.h>
 
-#include "constraints/implementations/not_equals.h"
+#include "constraints/not_equals.h"
 
 int main()
 {

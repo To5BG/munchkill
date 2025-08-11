@@ -1,4 +1,4 @@
-#include "constraints/implementations/not_equals.h"
+#include "constraints/not_equals.h"
 
 NotEqualsConstraint::NotEqualsConstraint(IVariable* lhs, IVariable* rhs) :
     lhs(lhs),

@@ -3,7 +3,7 @@
 #include <optional>
 #include <stack>
 #include <vector>
-#include "constraints/implementations/atomic_constraint.h"
+#include "constraints/atomic_constraint.h"
 #include "solver_context.h"
 
 class AtomicConstraint;
