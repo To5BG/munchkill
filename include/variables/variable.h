@@ -1,6 +1,13 @@
 #pragma once
 
+#include <optional>
+#include <stack>
+#include <vector>
+#include "constraints/implementations/atomic_constraint.h"
+#include "solver_context.h"
+
 class AtomicConstraint;
+class SolverContext;
 
 /// @brief Interface for integer variables.
 class IVariable 
@@ -9,21 +16,33 @@ class IVariable
 public:
     /// @brief Remove a value from the variable's domain.
     /// @param value Value to remove.
-    virtual void remove(int value) = 0;
+    virtual void remove(SolverContext& context, int value) = 0;
 
     /// @brief Sets the lower bound of the variable.
     /// @param value New lower bound value.
-    virtual void setLowerBound(int value) = 0;
+    virtual void setLowerBound(SolverContext& context, int value) = 0;
 
     /// @brief Sets the upper bound of the variable.
     /// @param value New upper bound value.
-    virtual void setUpperBound(int value) = 0;
+    virtual void setUpperBound(SolverContext& context, int value) = 0;
+
+    // TODO Documentation
+    virtual void newDecisionLevel() = 0;
+    // TODO Documentation
+    virtual void rewindDecisionLevel(unsigned int newLevel) = 0;
 
     /// @brief Get the lower bound of the variable.
-    virtual int lowerBound() = 0;
+    virtual int lowerBound() const = 0;
 
     /// @brief Get the upper bound of the variable.
-    virtual int upperBound() = 0;
+    virtual int upperBound() const = 0;
+
+    virtual std::optional<int> assignedValue() const = 0;
+
+    virtual bool isFixed() const = 0;
 
     AtomicConstraint operator >=(int const& constant);
+    AtomicConstraint operator <=(int const& constant);
+    AtomicConstraint operator ==(int const& constant);
+    AtomicConstraint operator !=(int const& constant);
 };

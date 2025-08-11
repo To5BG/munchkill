@@ -9,6 +9,18 @@ NotEqualsConstraint::NotEqualsConstraint(IVariable* lhs, IVariable* rhs) :
 
 void NotEqualsConstraint::propagate() 
 {
+    // TODO
     std::cout << "123" << std::endl;
 }
 
+bool NotEqualsConstraint::isSatisfied() const
+{
+    // TODO
+    return false;
+}
+
+bool NotEqualsConstraint::isViolated() const
+{
+    // TODO
+    return false;
+}

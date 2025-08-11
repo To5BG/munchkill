@@ -14,4 +14,6 @@ public:
     NotEqualsConstraint(IVariable* lhs, IVariable* rhs);
 
     void propagate() override;
+    bool isSatisfied() const override;
+    bool isViolated() const override;
 };
