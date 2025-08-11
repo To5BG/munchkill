@@ -3,9 +3,8 @@
 #include "constraints/atomic_constraint.h"
 #include "utils/operator.h"
 
-VariableSingleHoles::VariableSingleHoles(int lb, int ub) :
-    lb(lb),
-    ub(ub)
+VariableSingleHoles::VariableSingleHoles(int lb, int ub) : lb(lb),
+                                                           ub(ub)
 {
     // do nothing
 }

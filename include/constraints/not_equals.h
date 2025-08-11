@@ -7,11 +7,11 @@
 class NotEqualsConstraint : public IConstraint
 {
 private:
-    const IVariable* lhs;
-    const IVariable* rhs;
+    const IVariable *lhs;
+    const IVariable *rhs;
 
 public:
-    NotEqualsConstraint(IVariable* lhs, IVariable* rhs);
+    NotEqualsConstraint(IVariable *lhs, IVariable *rhs);
 
     void propagate() override;
     bool isSatisfied() const override;

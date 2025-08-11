@@ -10,7 +10,7 @@ class AtomicConstraint;
 class SolverContext;
 
 /// @brief Interface for integer variables.
-class IVariable 
+class IVariable
 {
 
 public:
@@ -41,8 +41,8 @@ public:
 
     virtual bool isFixed() const = 0;
 
-    AtomicConstraint operator >=(int const& constant);
-    AtomicConstraint operator <=(int const& constant);
-    AtomicConstraint operator ==(int const& constant);
-    AtomicConstraint operator !=(int const& constant);
+    AtomicConstraint operator>=(int const& constant);
+    AtomicConstraint operator<=(int const& constant);
+    AtomicConstraint operator==(int const& constant);
+    AtomicConstraint operator!=(int const& constant);
 };

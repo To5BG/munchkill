@@ -16,7 +16,7 @@ int main()
     {
         return fmt::format("Hi, {}! Welcome to C++23 🎉", name);
     };
-    
+
     fmt::print("{}\n", greet("Munchkill"));
     return 0;
 }
