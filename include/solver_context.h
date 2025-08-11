@@ -12,8 +12,8 @@ class AtomicConstraint;
 class SolverContext 
 {
 private:
-    std::vector<IVariable> variables;
-    std::vector<IConstraint> constraints;
+    std::vector<IVariable*> variables;
+    std::vector<IConstraint*> constraints;
     std::stack<AtomicConstraint> decisions;
 
     IVariable* selectVariableToSplit();
@@ -24,4 +24,6 @@ private:
 public: 
     bool solve();
     unsigned int getDecisionLevel() const;
+    void addVariable(IVariable *variable);
+    void addConstraint(IConstraint *constraint);
 }; 

@@ -27,9 +27,7 @@ public:
     virtual void setUpperBound(SolverContext& context, int value) = 0;
 
     // TODO Documentation
-    virtual void newDecisionLevel() = 0;
-    // TODO Documentation
-    virtual void rewindDecisionLevel(unsigned int newLevel) = 0;
+    virtual void backtrack(unsigned int newLevel) = 0;
 
     /// @brief Get the lower bound of the variable.
     virtual int lowerBound() const = 0;

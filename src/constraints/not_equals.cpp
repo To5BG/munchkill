@@ -3,23 +3,24 @@
 NotEqualsConstraint::NotEqualsConstraint(IVariable *lhs, IVariable *rhs) : lhs(lhs),
                                                                            rhs(rhs)
 {
-    std::cout << "NotEqualsConstraint created" << std::endl;
+    
 }
 
 void NotEqualsConstraint::propagate() 
 {
     // TODO
-    std::cout << "123" << std::endl;
 }
 
 bool NotEqualsConstraint::isSatisfied() const
 {
-    // TODO
-    return false;
+    auto lhsValue = lhs->assignedValue();
+    auto rhsValue = rhs->assignedValue();
+    return lhsValue.has_value() && rhsValue.has_value() && lhsValue.value() != rhsValue.value();
 }
 
 bool NotEqualsConstraint::isViolated() const
 {
-    // TODO
-    return false;
+    auto lhsValue = lhs->assignedValue();
+    auto rhsValue = rhs->assignedValue();
+    return lhsValue.has_value() && rhsValue.has_value() && lhsValue.value() == rhsValue.value();
 }

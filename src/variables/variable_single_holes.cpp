@@ -2,66 +2,89 @@
 #include "variables/variable.h"
 #include "constraints/atomic_constraint.h"
 #include "utils/operator.h"
+#include <limits>
 
-VariableSingleHoles::VariableSingleHoles(int lb, int ub) : lb(lb),
-                                                           ub(ub)
+VariableSingleHoles::VariableSingleHoles(int lb, int ub)
 {
-    // do nothing
+    domainShrinks.push_back({*this >= lb, 0});
+    domainShrinks.push_back({*this <= ub, 0});
 }
 
 void VariableSingleHoles::remove(SolverContext& context, int value)
 {
-    // TODO
-    domainShrinks.push_back(AtomicConstraint(this, Operator::NE, value));
-    this->holes.insert(value);
+    domainShrinks.push_back({*this != value, context.getDecisionLevel()});
 }
 
 void VariableSingleHoles::setLowerBound(SolverContext& context, int value)
 {
-    // TODO
-    domainShrinks.push_back(AtomicConstraint(this, Operator::GE, value));
-    this->lb = std::max(this->lb, value);
+    domainShrinks.push_back({*this >= value, context.getDecisionLevel()});
 }
 
 void VariableSingleHoles::setUpperBound(SolverContext& context, int value)
 {
-    // TODO
-    domainShrinks.push_back(AtomicConstraint(this, Operator::LE, value));
-    this->ub = std::max(this->ub, value);
+    domainShrinks.push_back({*this <= value, context.getDecisionLevel()});
 }
 
 int VariableSingleHoles::lowerBound() const
 {
-    return this->lb;
+    int lb = std::numeric_limits<int>::min();
+    for (const auto& shrink : domainShrinks) {
+        if (shrink.first.getOperator() == Operator::GE) {
+            lb = std::max(lb, shrink.first.getConstant());
+        }
+    }
+    std::unordered_set<int> holes;
+    for (const auto& shrink : domainShrinks) {
+        if (shrink.first.getOperator() == Operator::NE) {
+            holes.insert(shrink.first.getConstant());
+        }
+    }
+    while (holes.contains(lb)) {
+        lb++;
+    }
+    return lb;
 }
 
 int VariableSingleHoles::upperBound() const
 {
-    return this->ub;
+    int ub = std::numeric_limits<int>::max();
+    for (const auto& shrink : domainShrinks) {
+        if (shrink.first.getOperator() == Operator::LE) {
+            ub = std::min(ub, shrink.first.getConstant());
+        }
+    }
+    std::unordered_set<int> holes;
+    for (const auto& shrink : domainShrinks) {
+        if (shrink.first.getOperator() == Operator::NE) {
+            holes.insert(shrink.first.getConstant());
+        }
+    }
+    while (holes.contains(ub)) {
+        ub--;
+    }
+    return ub;
 }
 
-void VariableSingleHoles::newDecisionLevel() {
-    // TODO: Implement
-    //decisionLevelStarts.push_back(domainShrinks.size());
-}
-
-void VariableSingleHoles::rewindDecisionLevel(unsigned int newLevel) {
-    // TODO: Implement
-    // if (newLevel >= decisionLevelStarts.size()) {
-    //     throw "newLevel is too large";
-    // }
-
-    // recalculate bounds, not optimal right now
+void VariableSingleHoles::backtrack(unsigned int newLevel) {
+    for (int i = domainShrinks.size() - 1; i >= 0; i--) {
+        if (domainShrinks[i].second <= newLevel) {
+            domainShrinks.resize(i+1);
+            return;
+        }
+    }
 }
 
 std::optional<int> VariableSingleHoles::assignedValue() const 
 {
-    // TODO: Implement
+    int lb = this->lowerBound();
+    int ub = this->upperBound();
+    if (lb == ub) {
+        return lb;
+    }
     return {};
 }
 
 bool VariableSingleHoles::isFixed() const 
 {
-    // TODO: Implement
-    return false;
+    return this->assignedValue().has_value();
 }

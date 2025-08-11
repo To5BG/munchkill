@@ -31,16 +31,16 @@ bool SolverContext::solve() {
 
 IVariable* SolverContext::selectVariableToSplit() {
     for (int i = 0; i < variables.size(); i++) {
-        if (!variables[i].isFixed()) {
-            return &variables[i];
+        if (!variables[i]->isFixed()) {
+            return variables[i];
         }
     }
     return nullptr;
 }
 
 bool SolverContext::areAnyConstraintsViolated() const {
-    for (auto& constraint : constraints) {
-        if (constraint.isViolated()) {
+    for (auto constraint : constraints) {
+        if (constraint->isViolated()) {
             return true;
         }
     }
@@ -80,8 +80,8 @@ void SolverContext::backtrack(unsigned int newLevel) {
 	}
 
 	// rewind all variables to the state at the new decision level
-	for (auto& variable : variables) {
-		variable.rewindDecisionLevel(newLevel);
+	for (auto variable : variables) {
+		variable->backtrack(newLevel);
 	}
     propagate(lastDecision.invert());
 }
@@ -89,4 +89,12 @@ void SolverContext::backtrack(unsigned int newLevel) {
 unsigned int SolverContext::getDecisionLevel() const
 {
     return decisions.size();
+}
+
+void SolverContext::addVariable(IVariable* variable) {
+    variables.push_back(variable);
+}
+
+void SolverContext::addConstraint(IConstraint* constraint) {
+    constraints.push_back(constraint);
 }

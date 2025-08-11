@@ -7,10 +7,10 @@ class VariableSingleHoles : public IVariable
 {
 
 private:
-    int lb, ub;
-    std::unordered_set<int> holes;
+    // int lb, ub;
+    // std::unordered_set<int> holes;
 
-    std::vector<AtomicConstraint> domainShrinks;
+    std::vector<std::pair<AtomicConstraint, int>> domainShrinks;
 
 public:
     VariableSingleHoles(int lb, int ub);
@@ -18,10 +18,9 @@ public:
     void remove(SolverContext& context,int value) override;
     void setLowerBound(SolverContext& context, int value) override;
     void setUpperBound(SolverContext& context, int value) override;
-    int lowerBound() const  override;
+    int lowerBound() const override;
     int upperBound() const override;
     std::optional<int> assignedValue() const override;
     bool isFixed() const override;
-    void newDecisionLevel() override;
-    void rewindDecisionLevel(unsigned int newLevel) override;
+    void backtrack(unsigned int newLevel) override;
 };

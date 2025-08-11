@@ -14,6 +14,7 @@ private:
     int constant;
 
 public:
+    AtomicConstraint() = default;
     AtomicConstraint(IVariable* var, Operator op, int constant);
 
     void propagate() override;
