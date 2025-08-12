@@ -9,21 +9,23 @@
 class IVariable;
 class AtomicConstraint;
 
-class SolverContext 
+class SolverContext
 {
 private:
-    std::vector<IVariable*> variables;
-    std::vector<IConstraint*> constraints;
+    std::vector<IVariable *> variables;
+    std::vector<IConstraint *> constraints;
     std::stack<AtomicConstraint> decisions;
 
-    IVariable* selectVariableToSplit();
+    IVariable *selectVariableToSplit();
     bool areAnyConstraintsViolated() const;
     void propagate(AtomicConstraint ac);
     void backtrack(unsigned int newLevel);
 
-public: 
+public:
     bool solve();
     unsigned int getDecisionLevel() const;
     void addVariable(IVariable *variable);
     void addConstraint(IConstraint *constraint);
-}; 
+    // Getter for variables (needed by branchers)
+    const std::vector<IVariable *> &getVariables() const { return variables; }
+};
