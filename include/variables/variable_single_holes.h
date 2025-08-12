@@ -15,9 +15,9 @@ private:
 public:
     VariableSingleHoles(int lb, int ub);
 
-    void remove(SolverContext& context,int value) override;
-    void setLowerBound(SolverContext& context, int value) override;
-    void setUpperBound(SolverContext& context, int value) override;
+    void remove(SolverContext &context, int value) override;
+    void setLowerBound(SolverContext &context, int value) override;
+    void setUpperBound(SolverContext &context, int value) override;
     int lowerBound() const override;
     int upperBound() const override;
     std::optional<int> assignedValue() const override;

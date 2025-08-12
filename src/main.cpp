@@ -32,15 +32,17 @@ int main()
     context.addConstraint(&c3);
 
     bool result = context.solve();
-    if (result) {
-        std::cout<<"Solution found!" << std::endl;
+    if (result)
+    {
+        std::cout << "Solution found!" << std::endl;
         std::cout << "v1=" << v1.assignedValue().value() << std::endl;
         std::cout << "v2=" << v2.assignedValue().value() << std::endl;
         std::cout << "v3=" << v3.assignedValue().value() << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "Impossible." << std::endl;
     }
-
 
     return 0;
 }

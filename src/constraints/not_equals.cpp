@@ -3,10 +3,9 @@
 NotEqualsConstraint::NotEqualsConstraint(IVariable *lhs, IVariable *rhs) : lhs(lhs),
                                                                            rhs(rhs)
 {
-    
 }
 
-void NotEqualsConstraint::propagate() 
+void NotEqualsConstraint::propagate()
 {
     // TODO
 }
