@@ -5,6 +5,7 @@
 #include <vector>
 #include "constraints/atomic_constraint.h"
 #include "solver_context.h"
+#include "variables/domain_event.h"
 
 class AtomicConstraint;
 class SolverContext;
@@ -28,6 +29,11 @@ public:
 
     // TODO Documentation
     virtual void backtrack(unsigned int newLevel) = 0;
+
+    /// @brief Undo a domain modification
+    /// @param event The type of domain event to undo
+    /// @param value The value involved in the undo operation
+    virtual void undo(DomainEvent event, int value) = 0;
 
     /// @brief Get the lower bound of the variable.
     virtual int lowerBound() const = 0;

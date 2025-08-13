@@ -1,6 +1,7 @@
 #pragma once
 
 #include "variables/variable.h"
+#include "variables/domain_event.h"
 #include <unordered_set>
 
 class VariableSingleHoles : public IVariable
@@ -23,4 +24,5 @@ public:
     std::optional<int> assignedValue() const override;
     bool isFixed() const override;
     void backtrack(unsigned int newLevel) override;
+    void undo(DomainEvent event, int value) override;
 };

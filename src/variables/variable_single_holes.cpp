@@ -27,50 +27,9 @@ void VariableSingleHoles::setUpperBound(SolverContext &context, int value)
 
 int VariableSingleHoles::lowerBound() const
 {
-    int lb = std::numeric_limits<int>::min();
-    for (const auto &shrink : domainShrinks)
-    {
-        if (shrink.first.getOperator() == Operator::GE)
-        {
-            lb = std::max(lb, shrink.first.getConstant());
-        }
-    }
-    std::unordered_set<int> holes;
-    for (const auto &shrink : domainShrinks)
-    {
-        if (shrink.first.getOperator() == Operator::NE)
-        {
-            holes.insert(shrink.first.getConstant());
-        }
-    }
-    while (holes.contains(lb))
-    {
-        lb++;
-    }
-    return lb;
 }
-
-int VariableSingleHoles::upperBound() const
+void VariableSingleHoles::undo(DomainEvent event, int value)
 {
-    int ub = std::numeric_limits<int>::max();
-    for (const auto &shrink : domainShrinks)
-    {
-        if (shrink.first.getOperator() == Operator::LE)
-        {
-            ub = std::min(ub, shrink.first.getConstant());
-        }
-    }
-    std::unordered_set<int> holes;
-    for (const auto &shrink : domainShrinks)
-    {
-        if (shrink.first.getOperator() == Operator::NE)
-        {
-            holes.insert(shrink.first.getConstant());
-        }
-    }
-    while (holes.contains(ub))
-    {
-        ub--;
     }
     return ub;
 }
