@@ -3,7 +3,7 @@
 
 #include "constraints/not_equals.h"
 #include "variables/variable_single_holes.h"
-#include "solver_context.h"
+#include "solver.h"
 #include "branching/dfs_brancher.h"
 
 int main()
@@ -20,7 +20,7 @@ int main()
 
     // Create a DFS brancher
     DFSBrancher brancher;
-    SolverContext context(&brancher);
+    Solver context(&brancher);
 
     context.add_variable(&v1);
     context.add_variable(&v2);

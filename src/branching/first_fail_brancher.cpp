@@ -1,9 +1,9 @@
 #include "branching/first_fail_brancher.h"
-#include "solver_context.h"
+#include "solver.h"
 #include "variables/variable.h"
 #include <climits>
 
-std::optional<BranchingDecision> FirstFailBrancher::next(const SolverContext &context)
+std::optional<BranchingDecision> FirstFailBrancher::next(const Solver &context)
 {
     IVariable *best_var = nullptr;
     int smallest_domain = INT_MAX;

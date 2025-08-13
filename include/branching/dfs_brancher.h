@@ -7,5 +7,5 @@
 class DFSBrancher : public IBrancher
 {
 public:
-    std::optional<BranchingDecision> next(const SolverContext &context) override;
+    std::optional<BranchingDecision> next(const Solver &context) override;
 };

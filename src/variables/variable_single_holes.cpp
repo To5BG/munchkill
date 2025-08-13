@@ -1,8 +1,8 @@
 #include "variables/variable_single_holes.h"
 #include "variables/variable.h"
-#include "constraints/atomic_constraint.h"
+#include "constraints/literal.h"
 #include "utils/operator.h"
-#include "solver_context.h"
+#include "solver.h"
 #include <optional>
 #include <limits>
 

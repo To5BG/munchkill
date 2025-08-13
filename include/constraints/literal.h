@@ -6,7 +6,7 @@
 class IConstraint;
 class IVariable;
 
-class AtomicConstraint : public IConstraint
+class Literal : public IConstraint
 {
 private:
     IVariable *var;
@@ -14,14 +14,14 @@ private:
     int constant;
 
 public:
-    AtomicConstraint() = default;
-    AtomicConstraint(IVariable *var, Operator op, int constant);
+    Literal() = default;
+    Literal(IVariable *var, Operator op, int constant);
 
     void propagate() override;
     bool is_satisfied() const override;
     bool is_violated() const override;
 
-    AtomicConstraint invert();
+    Literal invert();
 
     IVariable *get_variable() const;
     Operator get_operator() const;

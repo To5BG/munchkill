@@ -1,8 +1,8 @@
 #include "branching/dfs_brancher.h"
-#include "solver_context.h"
+#include "solver.h"
 #include "variables/variable.h"
 
-std::optional<BranchingDecision> DFSBrancher::next(const SolverContext &context)
+std::optional<BranchingDecision> DFSBrancher::next(const Solver &context)
 {
     const auto &variables = context.get_variables();
     for (IVariable *var : variables)

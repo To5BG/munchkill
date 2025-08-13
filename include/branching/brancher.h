@@ -3,8 +3,8 @@
 #include <optional>
 
 class IVariable;
-class AtomicConstraint;
-class SolverContext;
+class Literal;
+class Solver;
 
 /// @brief Represents a branching decision (variable and value to assign)
 struct BranchingDecision
@@ -24,5 +24,5 @@ public:
     /// @brief Select the next variable and value to branch on
     /// @param context The solver context
     /// @return A branching decision or nullopt if all variables are assigned
-    virtual std::optional<BranchingDecision> next(const SolverContext &context) = 0;
+    virtual std::optional<BranchingDecision> next(const Solver &context) = 0;
 };

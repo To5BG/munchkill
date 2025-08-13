@@ -1,7 +1,7 @@
-#include "solver_context.h"
+#include "solver.h"
 #include <stdexcept>
 
-SolverContext::SolverContext(IBrancher *brancher) : brancher(brancher)
+Solver::Solver(IBrancher *brancher) : brancher(brancher)
 {
     if (brancher == nullptr)
     {
@@ -9,7 +9,7 @@ SolverContext::SolverContext(IBrancher *brancher) : brancher(brancher)
     }
 }
 
-bool SolverContext::solve()
+bool Solver::solve()
 {
     // Initialize solver state
     solver_state = SolverState::Solving;
@@ -46,7 +46,7 @@ bool SolverContext::solve()
     }
 }
 
-bool SolverContext::are_any_constraints_violated() const
+bool Solver::are_any_constraints_violated() const
 {
     for (auto constraint : constraints)
     {
@@ -58,12 +58,12 @@ bool SolverContext::are_any_constraints_violated() const
     return false;
 }
 
-void SolverContext::add_variable(IVariable *variable)
+void Solver::add_variable(IVariable *variable)
 {
     variables.push_back(variable);
 }
 
-void SolverContext::add_constraint(IConstraint *constraint)
+void Solver::add_constraint(IConstraint *constraint)
 {
     constraints.push_back(constraint);
 }

@@ -4,7 +4,7 @@
 #include <stack>
 #include "variables/variable.h"
 #include "constraints/constraint.h"
-#include "constraints/atomic_constraint.h"
+#include "constraints/literal.h"
 #include "propagation/propagator_queue.h"
 #include "propagation/propagation_status.h"
 #include "branching/brancher.h"
@@ -20,7 +20,7 @@ enum class SolverState
     Timeout      // Solver timed out
 };
 
-class SolverContext
+class Solver
 {
 private:
     std::vector<IVariable *> variables;
@@ -35,11 +35,11 @@ private:
     void handle_conflict();
 
     IVariable *select_variable_to_split();
-    void propagate(AtomicConstraint ac);
+    void propagate(Literal ac);
     void backtrack(unsigned int newLevel);
 
 public:
-    explicit SolverContext(IBrancher *brancher);
+    explicit Solver(IBrancher *brancher);
 
     SolverState solver_state = SolverState::Ready;
 
