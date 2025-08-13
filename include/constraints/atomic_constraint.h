@@ -18,12 +18,12 @@ public:
     AtomicConstraint(IVariable *var, Operator op, int constant);
 
     void propagate() override;
-    bool isSatisfied() const override;
-    bool isViolated() const override;
+    bool is_satisfied() const override;
+    bool is_violated() const override;
 
     AtomicConstraint invert();
 
-    IVariable *getVariable() const;
-    Operator getOperator() const;
-    int getConstant() const;
+    IVariable *get_variable() const;
+    Operator get_operator() const;
+    int get_constant() const;
 };

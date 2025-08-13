@@ -46,11 +46,11 @@ IVariable *SolverContext::selectVariableToSplit()
     return nullptr;
 }
 
-bool SolverContext::areAnyConstraintsViolated() const
+bool SolverContext::are_any_constraints_violated() const
 {
     for (auto constraint : constraints)
     {
-        if (constraint->isViolated())
+        if (constraint->is_violated())
         {
             return true;
         }
@@ -103,17 +103,17 @@ void SolverContext::backtrack(unsigned int newLevel)
     propagate(lastDecision.invert());
 }
 
-unsigned int SolverContext::getDecisionLevel() const
+unsigned int SolverContext::get_decision_level() const
 {
     return decisions.size();
 }
 
-void SolverContext::addVariable(IVariable *variable)
+void SolverContext::add_variable(IVariable *variable)
 {
     variables.push_back(variable);
 }
 
-void SolverContext::addConstraint(IConstraint *constraint)
+void SolverContext::add_constraint(IConstraint *constraint)
 {
     constraints.push_back(constraint);
 }

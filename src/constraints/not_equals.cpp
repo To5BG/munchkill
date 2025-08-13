@@ -10,16 +10,16 @@ void NotEqualsConstraint::propagate()
     // TODO
 }
 
-bool NotEqualsConstraint::isSatisfied() const
+bool NotEqualsConstraint::is_satisfied() const
 {
-    auto lhsValue = lhs->assignedValue();
-    auto rhsValue = rhs->assignedValue();
+    auto lhsValue = lhs->assigned_value();
+    auto rhsValue = rhs->assigned_value();
     return lhsValue.has_value() && rhsValue.has_value() && lhsValue.value() != rhsValue.value();
 }
 
-bool NotEqualsConstraint::isViolated() const
+bool NotEqualsConstraint::is_violated() const
 {
-    auto lhsValue = lhs->assignedValue();
-    auto rhsValue = rhs->assignedValue();
+    auto lhsValue = lhs->assigned_value();
+    auto rhsValue = rhs->assigned_value();
     return lhsValue.has_value() && rhsValue.has_value() && lhsValue.value() == rhsValue.value();
 }

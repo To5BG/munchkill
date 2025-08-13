@@ -11,13 +11,13 @@ void AtomicConstraint::propagate()
     // TODO
 }
 
-bool AtomicConstraint::isSatisfied() const
+bool AtomicConstraint::is_satisfied() const
 {
     // TODO
     return false;
 }
 
-bool AtomicConstraint::isViolated() const
+bool AtomicConstraint::is_violated() const
 {
     // TODO
     return false;
@@ -45,17 +45,17 @@ AtomicConstraint AtomicConstraint::invert()
     return AtomicConstraint(var, invertedOp, constant);
 }
 
-IVariable *AtomicConstraint::getVariable() const
+IVariable *AtomicConstraint::get_variable() const
 {
     return var;
 }
 
-Operator AtomicConstraint::getOperator() const
+Operator AtomicConstraint::get_operator() const
 {
     return op;
 }
 
-int AtomicConstraint::getConstant() const
+int AtomicConstraint::get_constant() const
 {
     return constant;
 }

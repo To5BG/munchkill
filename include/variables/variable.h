@@ -21,11 +21,11 @@ public:
 
     /// @brief Sets the lower bound of the variable.
     /// @param value New lower bound value.
-    virtual void setLowerBound(SolverContext &context, int value) = 0;
+    virtual void set_lower_bound(SolverContext &context, int value) = 0;
 
     /// @brief Sets the upper bound of the variable.
     /// @param value New upper bound value.
-    virtual void setUpperBound(SolverContext &context, int value) = 0;
+    virtual void set_upper_bound(SolverContext &context, int value) = 0;
 
     // TODO Documentation
     virtual void backtrack(unsigned int newLevel) = 0;
@@ -36,14 +36,14 @@ public:
     virtual void undo(DomainEvent event, int value) = 0;
 
     /// @brief Get the lower bound of the variable.
-    virtual int lowerBound() const = 0;
+    virtual int lower_bound() const = 0;
 
     /// @brief Get the upper bound of the variable.
-    virtual int upperBound() const = 0;
+    virtual int upper_bound() const = 0;
 
-    virtual std::optional<int> assignedValue() const = 0;
+    virtual std::optional<int> assigned_value() const = 0;
 
-    virtual bool isFixed() const = 0;
+    virtual bool is_fixed() const = 0;
 
     AtomicConstraint operator>=(int const &constant);
     AtomicConstraint operator<=(int const &constant);

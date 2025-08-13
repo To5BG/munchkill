@@ -24,9 +24,9 @@ public:
     /// @brief Select the next variable and value to branch on
     /// @param context The solver context
     /// @return A branching decision or nullopt if all variables are assigned
-    virtual std::optional<BranchingDecision> selectBranch(const SolverContext &context) = 0;
+    virtual std::optional<BranchingDecision> select_branch(const SolverContext &context) = 0;
 
     /// @brief Notify the brancher about a backtrack operation
     /// @param new_level The level we backtracked to
-    virtual void onBacktrack(unsigned int new_level) {}
+    virtual void on_backtrack(unsigned int new_level) {}
 };

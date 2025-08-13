@@ -2,15 +2,15 @@
 #include "solver_context.h"
 #include "variables/variable.h"
 
-std::optional<BranchingDecision> DFSBrancher::selectBranch(const SolverContext &context)
+std::optional<BranchingDecision> DFSBrancher::select_branch(const SolverContext &context)
 {
-    const auto &variables = context.getVariables();
+    const auto &variables = context.get_variables();
     for (IVariable *var : variables)
     {
-        if (!var->isFixed())
+        if (!var->is_fixed())
         {
             // Return the first unfixed variable with its lower bound value
-            return BranchingDecision(var, var->lowerBound());
+            return BranchingDecision(var, var->lower_bound());
         }
     }
     // All variables are assigned

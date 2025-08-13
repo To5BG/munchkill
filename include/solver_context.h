@@ -16,16 +16,13 @@ private:
     std::vector<IConstraint *> constraints;
     std::stack<AtomicConstraint> decisions;
 
-    IVariable *selectVariableToSplit();
-    bool areAnyConstraintsViolated() const;
+    IVariable *select_variable_to_split();
     void propagate(AtomicConstraint ac);
     void backtrack(unsigned int newLevel);
 
 public:
     bool solve();
-    unsigned int getDecisionLevel() const;
-    void addVariable(IVariable *variable);
-    void addConstraint(IConstraint *constraint);
-    // Getter for variables (needed by branchers)
-    const std::vector<IVariable *> &getVariables() const { return variables; }
+    void add_variable(IVariable *variable);
+    void add_constraint(IConstraint *constraint);
+    bool are_any_constraints_violated() const;
 };
