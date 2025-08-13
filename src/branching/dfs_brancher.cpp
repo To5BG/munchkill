@@ -2,7 +2,7 @@
 #include "solver.h"
 #include "variables/variable.h"
 
-std::optional<BranchingDecision> DFSBrancher::next(const Solver &context)
+std::optional<Decision> DFSBrancher::next(const Solver &context)
 {
     const auto &variables = context.get_variables();
     for (IVariable *var : variables)
@@ -10,7 +10,7 @@ std::optional<BranchingDecision> DFSBrancher::next(const Solver &context)
         if (!var->is_fixed())
         {
             // Return the first unfixed variable with its lower bound value
-            return BranchingDecision(var, var->lower_bound());
+            return Decision(var, var->lower_bound());
         }
     }
     // All variables are assigned

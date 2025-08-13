@@ -3,7 +3,7 @@
 #include "variables/variable.h"
 #include <climits>
 
-std::optional<BranchingDecision> FirstFailBrancher::next(const Solver &context)
+std::optional<Decision> FirstFailBrancher::next(const Solver &context)
 {
     IVariable *best_var = nullptr;
     int smallest_domain = INT_MAX;
@@ -27,5 +27,5 @@ std::optional<BranchingDecision> FirstFailBrancher::next(const Solver &context)
         return std::nullopt; // All variables are assigned
     }
     // Choose the lower bound value (simple strategy)
-    return BranchingDecision(best_var, best_var->lower_bound());
+    return Decision(best_var, best_var->lower_bound());
 }

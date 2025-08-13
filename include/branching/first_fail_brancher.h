@@ -7,5 +7,5 @@
 class FirstFailBrancher : public IBrancher
 {
 public:
-    std::optional<BranchingDecision> next(const Solver &context) override;
+    std::optional<Decision> next(const Solver &context) override;
 };

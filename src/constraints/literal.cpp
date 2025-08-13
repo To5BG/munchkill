@@ -12,10 +12,12 @@ void Literal::propagate()
 
 bool Literal::is_satisfied() const
 {
+    return true;
 }
 
 bool Literal::is_violated() const
 {
+    return false;
 }
 
 Literal Literal::invert()
