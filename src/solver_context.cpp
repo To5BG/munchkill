@@ -31,13 +31,14 @@ bool SolverContext::solve()
         }
         else
         {
+            int curr_level = trail.get_current_level();
             // Infeasible if at root
-            if (trail.get_current_level() == 0)
+            if (curr_level == 0)
             {
                 solver_state = SolverState::Infeasible;
                 return false;
             }
-            TrailEntry last_decision = trail.backtrack(trail.get_current_level() - 1);
+            TrailEntry last_decision = trail.backtrack(curr_level - 1);
             // Invert last decision as a propagation
             trail.push(last_decision.variable, DomainEvent::Removal, last_decision.value);
             solver_state = SolverState::Solving;

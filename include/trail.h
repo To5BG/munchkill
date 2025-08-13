@@ -43,7 +43,7 @@ public:
     TrailEntry backtrack(unsigned int target_level);
 
     /// @brief Get the current decision level
-    unsigned int get_current_level() const { return level_delimiter.size() - 1; }
+    unsigned int get_current_level() const { return level_delimiter.size(); }
 
     /// @brief Get the number of entries in the trail
     size_t size() const { return trail.size(); }

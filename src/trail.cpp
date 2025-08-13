@@ -3,7 +3,6 @@
 
 Trail::Trail()
 {
-    level_delimiter.push_back(0); // Level 0 starts at position 0
 }
 
 void Trail::push(IVariable *variable, DomainEvent event, int value)
@@ -29,7 +28,7 @@ TrailEntry Trail::backtrack(unsigned int target_level)
         trail.pop_back();
     }
     // Sync delimiter vector
-    level_delimiter.resize(target_level + 1);
+    level_delimiter.resize(target_level);
     return last_entry;
 }
 
@@ -37,5 +36,4 @@ void Trail::clear()
 {
     trail.clear();
     level_delimiter.clear();
-    level_delimiter.push_back(0);
 }

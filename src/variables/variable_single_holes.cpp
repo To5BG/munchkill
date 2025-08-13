@@ -65,9 +65,9 @@ void VariableSingleHoles::undo(DomainEvent event, int value)
     switch (event)
     {
     case DomainEvent::Removal:
-        if (value > lb)
+        if (value < lb)
             set_lower_bound(value);
-        else if (value < ub)
+        else if (value > ub)
             set_upper_bound(value);
         else
             holes.erase(value);
