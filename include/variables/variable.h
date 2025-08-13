@@ -15,20 +15,43 @@ class IVariable
 {
 
 public:
+    /// @brief Update the variable based on the domain event.
+    /// @param event The domain event that occurred.
+    /// @param value The value associated with the event.
+    void update(DomainEvent event, int value)
+    {
+        switch (event)
+        {
+        case DomainEvent::Assign:
+            assign(value);
+            break;
+        case DomainEvent::Removal:
+            remove(value);
+            break;
+        case DomainEvent::LowerBound:
+            set_lower_bound(value);
+            break;
+        case DomainEvent::UpperBound:
+            set_upper_bound(value);
+            break;
+        }
+    }
+
     /// @brief Remove a value from the variable's domain.
     /// @param value Value to remove.
-    virtual void remove(SolverContext &context, int value) = 0;
+    virtual void remove(int value) = 0;
 
     /// @brief Sets the lower bound of the variable.
     /// @param value New lower bound value.
-    virtual void set_lower_bound(SolverContext &context, int value) = 0;
+    virtual void set_lower_bound(int value) = 0;
 
     /// @brief Sets the upper bound of the variable.
     /// @param value New upper bound value.
-    virtual void set_upper_bound(SolverContext &context, int value) = 0;
+    virtual void set_upper_bound(int value) = 0;
 
-    // TODO Documentation
-    virtual void backtrack(unsigned int newLevel) = 0;
+    /// @brief Assign a value to the variable.
+    /// @param value Value to assign.
+    virtual void assign(int value) = 0;
 
     /// @brief Undo a domain modification
     /// @param event The type of domain event to undo

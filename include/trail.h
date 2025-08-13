@@ -39,7 +39,8 @@ public:
 
     /// @brief Backtrack to a specific decision level
     /// @param target_level The level to backtrack to
-    void backtrack(unsigned int target_level);
+    /// @return The decision at the target level
+    TrailEntry backtrack(unsigned int target_level);
 
     /// @brief Get the current decision level
     unsigned int get_current_level() const { return level_delimiter.size() - 1; }

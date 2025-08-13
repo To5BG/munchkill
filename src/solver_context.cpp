@@ -1,49 +1,48 @@
 #include "solver_context.h"
 #include <stdexcept>
 
-bool SolverContext::solve()
+SolverContext::SolverContext(IBrancher *brancher) : brancher(brancher)
 {
-    while (true)
+    if (brancher == nullptr)
     {
-        // select variable to split
-        IVariable *var = selectVariableToSplit();
-        if (var == nullptr)
-        {
-            // all variables are fixed, we can stop
-            return true;
-        }
-        // split on variable
-        auto split = *var == var->lowerBound();
-        decisions.push(split);
-        propagate(split);
-
-        // while there are violated constraints, we continue backtracking to the previous decision level
-        while (areAnyConstraintsViolated())
-        {
-            if (getDecisionLevel() == 0)
-            {
-                // no decisions left, contradiction found
-                return false;
-            }
-            // backtrack one decision level
-            backtrack(getDecisionLevel() - 1);
-        }
+        throw std::invalid_argument("Brancher cannot be null");
     }
-
-    // should not be reachable
-    return false;
 }
 
-IVariable *SolverContext::selectVariableToSplit()
+bool SolverContext::solve()
 {
-    for (int i = 0; i < variables.size(); i++)
+    // Initialize solver state
+    solver_state = SolverState::Solving;
+    // Main loop
+    while (true)
     {
-        if (!variables[i]->isFixed())
+        // TODO: add propagation
+        if (!is_conflicting())
         {
-            return variables[i];
+            auto branch_decision = brancher->next(*this);
+            if (!branch_decision.has_value())
+            {
+                // All variables are assigned - we have a solution
+                return true;
+            }
+            // Make decision
+            trail.next_decision_level();
+            trail.push(branch_decision->variable, DomainEvent::Assign, branch_decision->value);
+        }
+        else
+        {
+            // Infeasible if at root
+            if (trail.get_current_level() == 0)
+            {
+                solver_state = SolverState::Infeasible;
+                return false;
+            }
+            TrailEntry last_decision = trail.backtrack(trail.get_current_level() - 1);
+            // Invert last decision as a propagation
+            trail.push(last_decision.variable, DomainEvent::Removal, last_decision.value);
+            solver_state = SolverState::Solving;
         }
     }
-    return nullptr;
 }
 
 bool SolverContext::are_any_constraints_violated() const
@@ -56,56 +55,6 @@ bool SolverContext::are_any_constraints_violated() const
         }
     }
     return false;
-}
-
-void SolverContext::propagate(AtomicConstraint ac)
-{
-    auto var = ac.getVariable();
-    switch (ac.getOperator())
-    {
-    case Operator::GE:
-        var->setLowerBound(*this, ac.getConstant());
-        break;
-    case Operator::LE:
-        var->setUpperBound(*this, ac.getConstant());
-        break;
-    case Operator::EQ:
-        var->setLowerBound(*this, ac.getConstant());
-        var->setUpperBound(*this, ac.getConstant());
-        break;
-    case Operator::NE:
-        var->remove(*this, ac.getConstant());
-        break;
-    }
-
-    // TODO Propagating other constraints, would require propagation queue and such
-}
-
-void SolverContext::backtrack(unsigned int newLevel)
-{
-    if (newLevel >= decisions.size())
-    {
-        throw std::runtime_error("newLevel is too large");
-    }
-
-    AtomicConstraint lastDecision = decisions.top();
-    while (decisions.size() > newLevel)
-    {
-        lastDecision = decisions.top();
-        decisions.pop();
-    }
-
-    // rewind all variables to the state at the new decision level
-    for (auto variable : variables)
-    {
-        variable->backtrack(newLevel);
-    }
-    propagate(lastDecision.invert());
-}
-
-unsigned int SolverContext::get_decision_level() const
-{
-    return decisions.size();
 }
 
 void SolverContext::add_variable(IVariable *variable)

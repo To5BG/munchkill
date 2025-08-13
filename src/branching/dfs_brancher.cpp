@@ -2,7 +2,7 @@
 #include "solver_context.h"
 #include "variables/variable.h"
 
-std::optional<BranchingDecision> DFSBrancher::select_branch(const SolverContext &context)
+std::optional<BranchingDecision> DFSBrancher::next(const SolverContext &context)
 {
     const auto &variables = context.get_variables();
     for (IVariable *var : variables)
