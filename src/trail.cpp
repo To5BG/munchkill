@@ -1,5 +1,6 @@
 #include "trail.h"
 #include "variables/variable.h"
+#include "utils/asserts.h"
 
 Trail::Trail()
 {
@@ -13,11 +14,13 @@ void Trail::push(IVariable *variable, DomainEvent event, int value)
 
 void Trail::next_decision_level()
 {
+    assert_err(level_delimiter.empty() || level_delimiter.back() < trail.size(), "Cannot have an empty decision level");
     level_delimiter.push_back(trail.size()); // Mark where the new level starts
 }
 
 TrailEntry Trail::backtrack(unsigned int target_level)
 {
+    assert_err(target_level < level_delimiter.size(), "Cannot backtrack to a non-existent level");
     size_t marker = level_delimiter[target_level];
     TrailEntry &last_entry = trail.back();
     while (trail.size() > marker)

@@ -2,6 +2,7 @@
 
 #include <optional>
 #include "variables/domain_event.h"
+#include "utils/asserts.h"
 
 /// @brief Interface for integer variables.
 class IVariable
@@ -11,8 +12,9 @@ public:
     /// @brief Update the variable based on the domain event.
     /// @param event The domain event that occurred.
     /// @param value The value associated with the event.
-    void update(DomainEvent event, int value)
+    inline void update(DomainEvent event, int value)
     {
+        assert_warn(!is_fixed(), "Attempting to modify a fixed variable");
         switch (event)
         {
         case DomainEvent::Assign:

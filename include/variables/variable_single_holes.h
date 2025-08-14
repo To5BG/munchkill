@@ -26,5 +26,5 @@ public:
 
     std::optional<int> assigned_value() const override;
     bool is_fixed() const override;
-    void update_assigned_value();
+    void on_bound_change();
 };

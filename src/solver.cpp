@@ -2,14 +2,9 @@
 #include "variables/variable.h"
 #include "constraints/literal.h"
 #include "branching/brancher.h"
-#include <stdexcept>
 
 Solver::Solver(IBrancher *brancher) : brancher(brancher)
 {
-    if (brancher == nullptr)
-    {
-        throw std::invalid_argument("Brancher cannot be null");
-    }
 }
 
 bool Solver::solve()
@@ -26,6 +21,7 @@ bool Solver::solve()
             if (!branch_decision.has_value())
             {
                 // All variables are assigned - we have a solution
+                solver_state = SolverState::Satisfiable;
                 return true;
             }
             // Make decision
