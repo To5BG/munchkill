@@ -1,23 +1,22 @@
-#include "variables/variable.h"
-#include "constraints/literal.h"
+#include "variables/variable_operators.h"
 #include "utils/operator.h"
 
-Literal IVariable::operator>=(int const &constant)
+Literal operator>=(const IVariable &var, int constant)
 {
-    return Literal(this, Operator::GE, constant);
+    return Literal(const_cast<IVariable *>(&var), Operator::GE, constant);
 }
 
-Literal IVariable::operator<=(int const &constant)
+Literal operator<=(const IVariable &var, int constant)
 {
-    return Literal(this, Operator::LE, constant);
+    return Literal(const_cast<IVariable *>(&var), Operator::LE, constant);
 }
 
-Literal IVariable::operator==(int const &constant)
+Literal operator==(const IVariable &var, int constant)
 {
-    return Literal(this, Operator::EQ, constant);
+    return Literal(const_cast<IVariable *>(&var), Operator::EQ, constant);
 }
 
-Literal IVariable::operator!=(int const &constant)
+Literal operator!=(const IVariable &var, int constant)
 {
-    return Literal(this, Operator::NE, constant);
+    return Literal(const_cast<IVariable *>(&var), Operator::NE, constant);
 }

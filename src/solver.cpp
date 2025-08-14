@@ -1,4 +1,7 @@
 #include "solver.h"
+#include "variables/variable.h"
+#include "constraints/literal.h"
+#include "branching/brancher.h"
 #include <stdexcept>
 
 Solver::Solver(IBrancher *brancher) : brancher(brancher)

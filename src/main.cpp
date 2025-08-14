@@ -1,5 +1,6 @@
 #include <fmt/core.h>
 #include <spdlog/spdlog.h>
+#include <iostream>
 
 #include "constraints/not_equals.h"
 #include "variables/variable_single_holes.h"

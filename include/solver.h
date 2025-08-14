@@ -1,14 +1,15 @@
 #pragma once
 
 #include <vector>
-#include <stack>
-#include "variables/variable.h"
 #include "constraints/constraint.h"
-#include "constraints/literal.h"
 #include "propagation/propagator_queue.h"
 #include "propagation/propagation_status.h"
-#include "branching/brancher.h"
 #include "trail.h"
+
+// Forward declarations
+class IVariable;
+class Literal;
+class IBrancher;
 
 /// @brief Overall state of the solver
 enum class SolverState

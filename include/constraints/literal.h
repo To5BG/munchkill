@@ -1,9 +1,9 @@
 #pragma once
+
 #include "constraints/constraint.h"
-#include "variables/variable.h"
 #include "utils/operator.h"
 
-class IConstraint;
+// Forward declarations
 class IVariable;
 
 class Literal : public IConstraint

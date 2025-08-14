@@ -1,8 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include "constraints/constraint.h"
-#include "variables/variable.h"
+
+// Forward declarations
+class IVariable;
 
 class NotEqualsConstraint : public IConstraint
 {

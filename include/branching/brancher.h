@@ -2,8 +2,8 @@
 
 #include <optional>
 
+// Forward declarations
 class IVariable;
-class Literal;
 class Solver;
 
 /// @brief Represents a branching decision (variable and value to assign)

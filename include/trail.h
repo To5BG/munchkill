@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <stack>
 #include "variables/domain_event.h"
 
+// Forward declarations
 class IVariable;
 
 /// @brief Represents a single entry on the trail

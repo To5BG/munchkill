@@ -1,10 +1,4 @@
 #include "variables/variable_single_holes.h"
-#include "variables/variable.h"
-#include "constraints/literal.h"
-#include "utils/operator.h"
-#include "solver.h"
-#include <optional>
-#include <limits>
 
 VariableSingleHoles::VariableSingleHoles(int lb, int ub)
     : lb(lb), ub(ub), holes({}), assigned(std::nullopt)

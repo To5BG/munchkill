@@ -1,14 +1,7 @@
 #pragma once
 
 #include <optional>
-#include <stack>
-#include <vector>
-#include "constraints/literal.h"
-#include "solver.h"
 #include "variables/domain_event.h"
-
-class Literal;
-class Solver;
 
 /// @brief Interface for integer variables.
 class IVariable
@@ -65,11 +58,5 @@ public:
     virtual int upper_bound() const = 0;
 
     virtual std::optional<int> assigned_value() const = 0;
-
     virtual bool is_fixed() const = 0;
-
-    Literal operator>=(int const &constant);
-    Literal operator<=(int const &constant);
-    Literal operator==(int const &constant);
-    Literal operator!=(int const &constant);
 };

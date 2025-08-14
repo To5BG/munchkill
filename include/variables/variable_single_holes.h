@@ -1,7 +1,6 @@
 #pragma once
 
 #include "variables/variable.h"
-#include "variables/domain_event.h"
 #include <unordered_set>
 #include <optional>
 
