@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <vector>
 
 // Forward declarations
 class IVariable;
@@ -22,7 +23,7 @@ public:
     virtual ~IBrancher() = default;
 
     /// @brief Select the next variable and value to branch on
-    /// @param context The solver context
+    /// @param vars The solver's variables
     /// @return A branching decision or nullopt if all variables are assigned
-    virtual std::optional<Decision> next(const Solver &context) = 0;
+    virtual std::optional<Decision> next(const std::vector<IVariable *> &vars) = 0;
 };

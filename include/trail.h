@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "variables/domain_event.h"
+#include "utils/domain_event.h"
 
 // Forward declarations
 class IVariable;

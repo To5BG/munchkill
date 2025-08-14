@@ -17,7 +17,7 @@ bool Solver::solve()
         // TODO: add propagation
         if (!is_conflicting())
         {
-            auto branch_decision = brancher->next(*this);
+            auto branch_decision = brancher->next(this->get_variables());
             if (!branch_decision.has_value())
             {
                 // All variables are assigned - we have a solution
@@ -43,18 +43,6 @@ bool Solver::solve()
             solver_state = SolverState::Solving;
         }
     }
-}
-
-bool Solver::are_any_constraints_violated() const
-{
-    for (auto constraint : constraints)
-    {
-        if (constraint->is_violated())
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
 void Solver::add_variable(IVariable *variable)

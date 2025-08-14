@@ -2,10 +2,9 @@
 #include "solver.h"
 #include "variables/variable.h"
 
-std::optional<Decision> DFSBrancher::next(const Solver &context)
+std::optional<Decision> DFSBrancher::next(const std::vector<IVariable *> &vars)
 {
-    const auto &variables = context.get_variables();
-    for (IVariable *var : variables)
+    for (IVariable *var : vars)
     {
         if (!var->is_fixed())
         {

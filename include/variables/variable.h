@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include "variables/domain_event.h"
+#include "utils/domain_event.h"
 #include "utils/asserts.h"
 
 /// @brief Interface for integer variables.

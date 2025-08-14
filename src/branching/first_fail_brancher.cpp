@@ -3,14 +3,13 @@
 #include "variables/variable.h"
 #include <climits>
 
-std::optional<Decision> FirstFailBrancher::next(const Solver &context)
+std::optional<Decision> FirstFailBrancher::next(const std::vector<IVariable *> &vars)
 {
     IVariable *best_var = nullptr;
     int smallest_domain = INT_MAX;
 
     // Find the variable with the smallest domain that is not yet fixed
-    const auto &variables = context.get_variables();
-    for (IVariable *var : variables)
+    for (IVariable *var : vars)
     {
         if (!var->is_fixed())
         {

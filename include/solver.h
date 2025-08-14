@@ -48,7 +48,17 @@ public:
     void add_variable(IVariable *variable);
     void add_constraint(IConstraint *constraint);
 
-    bool are_any_constraints_violated() const;
+    bool are_any_constraints_violated() const
+    {
+        for (const auto &constraint : constraints)
+        {
+            if (constraint->is_violated())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     bool is_conflicting() const { return solver_state == SolverState::Infeasible || are_any_constraints_violated(); }
     bool has_solution() const { return solver_state == SolverState::Satisfiable; }
