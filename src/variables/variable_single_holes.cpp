@@ -2,57 +2,46 @@
 #include "utils/asserts.h"
 
 VariableSingleHoles::VariableSingleHoles(int lb, int ub)
-    : lb(lb), ub(ub), holes({}), assigned(std::nullopt)
+    : lb(lb), ub(ub), holes({})
 {
-    assert_err(lb <= ub, "Inconsistent bounds");
+    on_bound_change();
 }
 
 void VariableSingleHoles::remove(int value)
 {
-    assert_warn(value >= lb && value <= ub, "Removing value outside current bounds");
+    assert_err(value >= lb && value <= ub, "Removing value outside current bounds");
+    // Check for holes on bounds
     if (value == lb)
-    {
-        while (holes.contains(value + 1))
-            value++;
         set_lower_bound(value + 1);
-    }
     else if (value == ub)
-    {
-        while (holes.contains(value - 1))
-            value--;
         set_upper_bound(value - 1);
-    }
-    this->holes.insert(value);
+    holes.insert(value);
 }
 
 void VariableSingleHoles::set_lower_bound(int value)
 {
     assert_warn(value > lb, "Trying to relax the lower bound during propagation");
-    this->lb = value;
+    // Make lb consistent - skip holes
+    while (holes.contains(value))
+        value++;
+    lb = value;
     on_bound_change();
 }
 
 void VariableSingleHoles::set_upper_bound(int value)
 {
     assert_warn(value < ub, "Trying to relax the upper bound during propagation");
-    this->ub = value;
+    // Make ub consistent - skip holes
+    while (holes.contains(value))
+        value--;
+    ub = value;
     on_bound_change();
 }
 
 void VariableSingleHoles::assign(int value)
 {
     assert_warn(value >= lb && value <= ub && !holes.contains(value), "Assignment value not in domain");
-    this->assigned = value;
-}
-
-int VariableSingleHoles::lower_bound() const
-{
-    return this->lb;
-}
-
-int VariableSingleHoles::upper_bound() const
-{
-    return this->ub;
+    assigned = value;
 }
 
 void VariableSingleHoles::undo(DomainEvent event, int value)
@@ -78,13 +67,14 @@ void VariableSingleHoles::undo(DomainEvent event, int value)
     assigned = std::nullopt;
 }
 
-void VariableSingleHoles::on_bound_change()
+int VariableSingleHoles::lower_bound() const
 {
-    int lb = this->lower_bound();
-    int ub = this->upper_bound();
-    assert_err(lb <= ub, "Inconsistent bounds");
-    if (lb == ub)
-        assigned = lb;
+    return lb;
+}
+
+int VariableSingleHoles::upper_bound() const
+{
+    return ub;
 }
 
 std::optional<int> VariableSingleHoles::assigned_value() const
@@ -95,4 +85,13 @@ std::optional<int> VariableSingleHoles::assigned_value() const
 bool VariableSingleHoles::is_fixed() const
 {
     return assigned.has_value();
+}
+
+void VariableSingleHoles::on_bound_change()
+{
+    int lb = lower_bound();
+    int ub = upper_bound();
+    assert_err(lb <= ub, "Inconsistent bounds");
+    if (lb == ub)
+        assigned = lb;
 }

@@ -10,8 +10,6 @@ class IVariable
 
 public:
     /// @brief Update the variable based on the domain event.
-    /// @param event The domain event that occurred.
-    /// @param value The value associated with the event.
     inline void update(DomainEvent event, int value)
     {
         assert_warn(!is_fixed(), "Attempting to modify a fixed variable");
@@ -33,24 +31,18 @@ public:
     }
 
     /// @brief Remove a value from the variable's domain.
-    /// @param value Value to remove.
     virtual void remove(int value) = 0;
 
     /// @brief Sets the lower bound of the variable.
-    /// @param value New lower bound value.
     virtual void set_lower_bound(int value) = 0;
 
     /// @brief Sets the upper bound of the variable.
-    /// @param value New upper bound value.
     virtual void set_upper_bound(int value) = 0;
 
     /// @brief Assign a value to the variable.
-    /// @param value Value to assign.
     virtual void assign(int value) = 0;
 
     /// @brief Undo a domain modification
-    /// @param event The type of domain event to undo
-    /// @param value The value involved in the undo operation
     virtual void undo(DomainEvent event, int value) = 0;
 
     /// @brief Get the lower bound of the variable.
@@ -59,6 +51,9 @@ public:
     /// @brief Get the upper bound of the variable.
     virtual int upper_bound() const = 0;
 
+    /// @brief Get the assigned value of the variable, if any.
     virtual std::optional<int> assigned_value() const = 0;
+
+    /// @brief Check if the variable is fixed, i.e. a single value.
     virtual bool is_fixed() const = 0;
 };
