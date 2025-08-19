@@ -13,6 +13,7 @@ endif()
 
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(Catch2 CONFIG REQUIRED)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(munchkill ${SOURCES})
@@ -21,3 +22,6 @@ target_link_libraries(munchkill PRIVATE fmt::fmt spdlog::spdlog)
 target_include_directories(munchkill 
 	PRIVATE ${PROJECT_SOURCE_DIR}/include
 )
+
+enable_testing()
+add_subdirectory(tests)
