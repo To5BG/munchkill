@@ -95,6 +95,13 @@ bool VariableSingleHoles::is_fixed() const
     return assigned.has_value();
 }
 
+bool VariableSingleHoles::is_valid(int value) const
+{
+    if (value < lb || value > ub)
+        return false;
+    return !holes.contains(value);
+}
+
 void VariableSingleHoles::on_bound_change()
 {
     int lb = lower_bound();

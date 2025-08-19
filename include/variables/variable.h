@@ -55,4 +55,7 @@ public:
 
     /// @brief Check if the variable is fixed, i.e. a single value.
     virtual bool is_fixed() const = 0;
+
+    /// @brief Check if a value is in the variable's domain.
+    virtual bool is_valid(int value) const = 0;
 };

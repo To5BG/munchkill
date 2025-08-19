@@ -3,8 +3,9 @@
 #include "variables/variable.h"
 #include <unordered_set>
 #include <optional>
+#include "variables/variable_iter.h"
 
-class VariableSingleHoles : public IVariable
+class VariableSingleHoles : public IVariable, public Iterable<VariableSingleHoles>
 {
 
 private:
@@ -28,4 +29,5 @@ public:
     int upper_bound() const override;
     std::optional<int> assigned_value() const override;
     bool is_fixed() const override;
+    bool is_valid(int value) const override;
 };
