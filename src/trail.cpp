@@ -8,8 +8,8 @@ Trail::Trail()
 
 void Trail::push(IVariable *variable, DomainEvent event, int value)
 {
-    variable->update(event, value);
-    trail.emplace_back(variable, event, value);
+    if (variable->update(event, value))
+        trail.emplace_back(variable, event, value);
 }
 
 void Trail::next_decision_level()

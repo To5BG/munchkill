@@ -8,39 +8,38 @@
 class IVariable
 {
 
+private:
+    /// @brief Remove a value from the variable's domain.
+    virtual bool remove(int value) = 0;
+
+    /// @brief Sets the lower bound of the variable.
+    virtual bool set_lower_bound(int value) = 0;
+
+    /// @brief Sets the upper bound of the variable.
+    virtual bool set_upper_bound(int value) = 0;
+
+    /// @brief Assign a value to the variable.
+    virtual bool assign(int value) = 0;
+
 public:
     /// @brief Update the variable based on the domain event.
-    inline void update(DomainEvent event, int value)
+    inline bool update(DomainEvent event, int value)
     {
-        assert_warn(!is_fixed(), "Attempting to modify a fixed variable");
+        if (!assert_warn(!is_fixed(), "Attempting to modify a fixed variable"))
+            return false;
         switch (event)
         {
         case DomainEvent::Assign:
-            assign(value);
-            break;
+            return assign(value);
         case DomainEvent::Removal:
-            remove(value);
-            break;
+            return remove(value);
         case DomainEvent::LowerBound:
-            set_lower_bound(value);
-            break;
+            return set_lower_bound(value);
         case DomainEvent::UpperBound:
-            set_upper_bound(value);
-            break;
+            return set_upper_bound(value);
         }
+        return false;
     }
-
-    /// @brief Remove a value from the variable's domain.
-    virtual void remove(int value) = 0;
-
-    /// @brief Sets the lower bound of the variable.
-    virtual void set_lower_bound(int value) = 0;
-
-    /// @brief Sets the upper bound of the variable.
-    virtual void set_upper_bound(int value) = 0;
-
-    /// @brief Assign a value to the variable.
-    virtual void assign(int value) = 0;
 
     /// @brief Undo a domain modification
     virtual void undo(DomainEvent event, int value) = 0;

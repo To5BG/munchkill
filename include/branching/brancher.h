@@ -23,7 +23,5 @@ public:
     virtual ~IBrancher() = default;
 
     /// @brief Select the next variable and value to branch on
-    /// @param vars The solver's variables
-    /// @return A branching decision or nullopt if all variables are assigned
     virtual std::optional<Decision> next(const std::vector<IVariable *> &vars) = 0;
 };

@@ -3,22 +3,25 @@
 #include <exception>
 #include <cstdlib>
 
-#ifndef NDEBUG
-#define assert_warn(expr, msg)       \
-    do                               \
-    {                                \
-        if (!(expr))                 \
-        {                            \
-            spdlog::warn("{}", msg); \
-        }                            \
-    } while (0)
+#ifdef NDEBUG
+// Release: just evaluate and return the expression
+inline bool assert_warn(bool expr, const char *) noexcept
+{
+    return expr;
+}
 #else
-#define assert_warn(expr, msg) ((void)0)
+// Debug: Also log a warning
+inline bool assert_warn(bool expr, const char *msg)
+{
+    if (!expr)
+        spdlog::warn("{}", msg);
+    return expr;
+}
 #endif
 
 inline void assert_err(bool expr, const char *msg)
 {
-    if (!(expr))
+    if (!expr)
     {
         spdlog::error("{}", msg);
         std::set_terminate([]

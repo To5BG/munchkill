@@ -7,41 +7,49 @@ VariableSingleHoles::VariableSingleHoles(int lb, int ub)
     on_bound_change();
 }
 
-void VariableSingleHoles::remove(int value)
+bool VariableSingleHoles::remove(int value)
 {
-    assert_err(value >= lb && value <= ub, "Removing value outside current bounds");
+    if (!assert_warn(value >= lb && value <= ub, "Removing value outside current bounds"))
+        return false;
     // Check for holes on bounds
     if (value == lb)
         set_lower_bound(value + 1);
     else if (value == ub)
         set_upper_bound(value - 1);
     holes.insert(value);
+    return true;
 }
 
-void VariableSingleHoles::set_lower_bound(int value)
+bool VariableSingleHoles::set_lower_bound(int value)
 {
-    assert_warn(value > lb, "Trying to relax the lower bound during propagation");
+    if (!assert_warn(value > lb, "Trying to relax the lower bound during propagation"))
+        return false;
     // Make lb consistent - skip holes
     while (holes.contains(value))
         value++;
     lb = value;
     on_bound_change();
+    return true;
 }
 
-void VariableSingleHoles::set_upper_bound(int value)
+bool VariableSingleHoles::set_upper_bound(int value)
 {
-    assert_warn(value < ub, "Trying to relax the upper bound during propagation");
+    if (!assert_warn(value < ub, "Trying to relax the upper bound during propagation"))
+        return false;
     // Make ub consistent - skip holes
     while (holes.contains(value))
         value--;
     ub = value;
     on_bound_change();
+    return true;
 }
 
-void VariableSingleHoles::assign(int value)
+bool VariableSingleHoles::assign(int value)
 {
-    assert_warn(value >= lb && value <= ub && !holes.contains(value), "Assignment value not in domain");
+    if (!assert_warn(value >= lb && value <= ub && !holes.contains(value), "Assignment value not in domain"))
+        return false;
     assigned = value;
+    return true;
 }
 
 void VariableSingleHoles::undo(DomainEvent event, int value)
