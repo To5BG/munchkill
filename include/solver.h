@@ -30,15 +30,6 @@ private:
     PropagatorQueue propagator_queue;
     IBrancher *brancher;
 
-    // DecisionResult enqueueNextDecision();
-    void enqueue_next_decision();
-    void declare_new_decision_level();
-    void handle_conflict();
-
-    IVariable *select_variable_to_split();
-    void propagate(Literal ac);
-    void backtrack(unsigned int newLevel);
-
 public:
     explicit Solver(IBrancher *brancher);
 

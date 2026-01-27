@@ -23,7 +23,6 @@ int main()
     bool result = context.solve();
     if (result)
     {
-        spdlog::info("Solution found!");
         fmt::print("v1={}\n", v1.assigned_value().value());
         fmt::print("v2={}\n", v2.assigned_value().value());
         fmt::print("v3={}\n", v3.assigned_value().value());
