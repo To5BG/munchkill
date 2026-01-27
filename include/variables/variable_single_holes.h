@@ -13,12 +13,14 @@ private:
     std::optional<int> assigned;
     std::unordered_set<int> holes;
 
-    bool remove(int value) override;
-    bool set_lower_bound(int value) override;
-    bool set_upper_bound(int value) override;
-    bool assign(int value) override;
+    UpdateResult remove(int value) override;
+    UpdateResult set_lower_bound(int value) override;
+    UpdateResult set_upper_bound(int value) override;
+    UpdateResult assign(int value) override;
 
-    void on_bound_change();
+    /// @brief A helper to check bound consistency and update assigned if needed
+    /// @return True if the bounds are consistent, false otherwise
+    bool on_bound_change(int lb, int ub);
 
 public:
     VariableSingleHoles(int lb, int ub);

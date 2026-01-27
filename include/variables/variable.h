@@ -3,6 +3,7 @@
 #include <optional>
 #include "utils/domain_event.h"
 #include "utils/asserts.h"
+#include "utils/update_result.h"
 
 /// @brief Interface for integer variables.
 class IVariable
@@ -10,23 +11,21 @@ class IVariable
 
 private:
     /// @brief Remove a value from the variable's domain.
-    virtual bool remove(int value) = 0;
+    virtual UpdateResult remove(int value) = 0;
 
     /// @brief Sets the lower bound of the variable.
-    virtual bool set_lower_bound(int value) = 0;
+    virtual UpdateResult set_lower_bound(int value) = 0;
 
     /// @brief Sets the upper bound of the variable.
-    virtual bool set_upper_bound(int value) = 0;
+    virtual UpdateResult set_upper_bound(int value) = 0;
 
     /// @brief Assign a value to the variable.
-    virtual bool assign(int value) = 0;
+    virtual UpdateResult assign(int value) = 0;
 
 public:
     /// @brief Update the variable based on the domain event.
-    inline bool update(DomainEvent event, int value)
+    inline UpdateResult update(DomainEvent event, int value)
     {
-        if (!assert_warn(!is_fixed(), "Attempting to modify a fixed variable"))
-            return false;
         switch (event)
         {
         case DomainEvent::Assign:
@@ -38,7 +37,7 @@ public:
         case DomainEvent::UpperBound:
             return set_upper_bound(value);
         }
-        return false;
+        return update_result::unchanged();
     }
 
     /// @brief Undo a domain modification

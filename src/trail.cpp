@@ -6,10 +6,16 @@ Trail::Trail()
 {
 }
 
-void Trail::push(IVariable *variable, DomainEvent event, int value)
+bool Trail::push(IVariable *variable, DomainEvent event, int value)
 {
-    if (variable->update(event, value))
-        trail.emplace_back(variable, event, value);
+    UpdateResult result = variable->update(event, value);
+    // Domain became empty - failure
+    if (!result)
+        return false;
+    // Domain changed, add to trail
+    if (result.value().has_value())
+        trail.emplace_back(variable, event, result.value().value());
+    return true;
 }
 
 void Trail::next_decision_level()

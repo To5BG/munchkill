@@ -2,11 +2,12 @@
 
 #include <vector>
 #include "utils/domain_event.h"
+#include "utils/update_result.h"
 
 // Forward declarations
 class IVariable;
 
-/// @brief Represents a single entry on the trail
+/// @brief Represents a single entry on the trail, as a (variable, event, value) trilet
 struct TrailEntry
 {
     IVariable *variable; // The variable that was modified
@@ -32,7 +33,8 @@ public:
     /// @param variable The variable being modified
     /// @param event The type of domain event
     /// @param value The value involved in the modification
-    void push(IVariable *variable, DomainEvent event, int value);
+    /// @return false if the domain became empty, else true
+    bool push(IVariable *variable, DomainEvent event, int value);
 
     /// @brief Increase the decision level
     void next_decision_level();

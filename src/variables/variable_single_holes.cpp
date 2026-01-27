@@ -4,52 +4,61 @@
 VariableSingleHoles::VariableSingleHoles(int lb, int ub)
     : lb(lb), ub(ub), holes({})
 {
-    on_bound_change();
+    on_bound_change(lb, ub);
 }
 
-bool VariableSingleHoles::remove(int value)
+UpdateResult VariableSingleHoles::remove(int value)
 {
-    if (!assert_warn(value >= lb && value <= ub, "Removing value outside current bounds"))
-        return false;
-    // Check for holes on bounds
-    if (value == lb)
-        set_lower_bound(value + 1);
-    else if (value == ub)
-        set_upper_bound(value - 1);
+    if (value < lb || value > ub || holes.contains(value))
+        return update_result::unchanged();
+    // Check for lower bound hole
+    if (value == lb && !set_lower_bound(value + 1))
+        return update_result::empty_domain();
+    // Check for upper bound hole
+    else if (value == ub && !set_upper_bound(value - 1))
+        return update_result::empty_domain();
     holes.insert(value);
-    return true;
+    return update_result::changed(value);
 }
 
-bool VariableSingleHoles::set_lower_bound(int value)
+UpdateResult VariableSingleHoles::set_lower_bound(int value)
 {
-    if (!assert_warn(value > lb, "Trying to relax the lower bound during propagation"))
-        return false;
+    if (value <= lb)
+        return update_result::unchanged();
     // Make lb consistent - skip holes
+    int old_lb = lb;
     while (holes.contains(value))
         value++;
+    // Check consistency or update
+    if (!on_bound_change(value, ub))
+        return update_result::empty_domain();
     lb = value;
-    on_bound_change();
-    return true;
+    return update_result::changed(old_lb);
 }
 
-bool VariableSingleHoles::set_upper_bound(int value)
+UpdateResult VariableSingleHoles::set_upper_bound(int value)
 {
-    if (!assert_warn(value < ub, "Trying to relax the upper bound during propagation"))
-        return false;
+    if (value >= ub)
+        return update_result::unchanged();
     // Make ub consistent - skip holes
+    int old_ub = ub;
     while (holes.contains(value))
         value--;
+    // Check consistency or update
+    if (!on_bound_change(lb, value))
+        return update_result::empty_domain();
     ub = value;
-    on_bound_change();
-    return true;
+    return update_result::changed(old_ub);
 }
 
-bool VariableSingleHoles::assign(int value)
+UpdateResult VariableSingleHoles::assign(int value)
 {
-    if (!assert_warn(value >= lb && value <= ub && !holes.contains(value), "Assignment value not in domain"))
-        return false;
+    if (!is_valid(value))
+        return update_result::empty_domain();
+    if (assigned == value)
+        return update_result::unchanged();
     assigned = value;
-    return true;
+    return update_result::changed(value);
 }
 
 void VariableSingleHoles::undo(DomainEvent event, int value)
@@ -102,11 +111,17 @@ bool VariableSingleHoles::is_valid(int value) const
     return !holes.contains(value);
 }
 
-void VariableSingleHoles::on_bound_change()
+bool VariableSingleHoles::on_bound_change(int lb, int ub)
 {
-    int lb = lower_bound();
-    int ub = upper_bound();
-    assert_err(lb <= ub, "Inconsistent bounds");
-    if (lb == ub)
+    if (lb > ub)
+        return false;
+    // iff lb < ub
+    if (lb != ub)
+        return true;
+    if (!holes.contains(lb))
+    {
         assigned = lb;
+        return true;
+    }
+    return false;
 }
