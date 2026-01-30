@@ -1,20 +1,25 @@
 #include "trail.h"
 #include "variables/variable.h"
 #include "utils/asserts.h"
+#include "constraints/literal.h"
+#include <fmt/format.h>
 
 Trail::Trail()
 {
 }
 
-bool Trail::push(IVariable *variable, DomainEvent event, int value)
+bool Trail::push(Literal literal)
 {
-    UpdateResult result = variable->update(event, value);
-    // Domain became empty - failure
+    UpdateResult result = literal.var->update(literal.op, literal.constant);
+    // Domain became empty
     if (!result)
+    {
+        trail.emplace_back(literal);
         return false;
+    }
     // Domain changed, add to trail
     if (result.value().has_value())
-        trail.emplace_back(variable, event, result.value().value());
+        trail.emplace_back(Literal(literal.var, literal.op, result.value().value()));
     return true;
 }
 
@@ -24,16 +29,16 @@ void Trail::next_decision_level()
     level_delimiter.push_back(trail.size()); // Mark where the new level starts
 }
 
-TrailEntry Trail::backtrack(unsigned int target_level)
+Literal Trail::backtrack(unsigned int target_level)
 {
     assert_err(target_level < level_delimiter.size(), "Cannot backtrack to a non-existent level");
     size_t marker = level_delimiter[target_level];
-    TrailEntry &last_entry = trail.back();
+    Literal &last_entry = trail.back();
     while (trail.size() > marker)
     {
         last_entry = trail.back();
         // Revert previous state
-        last_entry.variable->undo(last_entry.event, last_entry.value);
+        last_entry.var->undo(last_entry.op, last_entry.constant);
         trail.pop_back();
     }
     // Sync delimiter vector

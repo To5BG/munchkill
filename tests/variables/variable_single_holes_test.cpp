@@ -21,10 +21,10 @@ TEST_CASE("VariableSingleHoles - Removal", "[variable]")
         DYNAMIC_SECTION(fmt::format("Removing a hole at {}", i))
         {
             // Update
-            var.update(DomainEvent::Removal, i);
+            var.update(Operator::NE, i);
             REQUIRE(var.domain().size() == 3);
             // Undo
-            var.undo(DomainEvent::Removal, i);
+            var.undo(Operator::NE, i);
             assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
         }
     }
@@ -42,15 +42,15 @@ TEST_CASE("VariableSingleHoles - Removal", "[variable]")
         CAPTURE(removal_order);
         // Update
         for (int i : removal_order)
-            var.update(DomainEvent::Removal, i);
+            var.update(Operator::NE, i);
         assert_var_state(var, 0, 0, std::vector<int>{0}, 0);
         // Undo one - check boundaries and other two holes
-        var.undo(DomainEvent::Removal, removal_order.back());
+        var.undo(Operator::NE, removal_order.back());
         REQUIRE_FALSE((var.is_valid(removal_order[0]) || var.is_valid(removal_order[1])));
         assert_var_state(var, 0, removal_order.back(), std::vector<int>{0, removal_order.back()}, std::nullopt);
         // Undo the rest
-        var.undo(DomainEvent::Removal, removal_order[1]);
-        var.undo(DomainEvent::Removal, removal_order[0]);
+        var.undo(Operator::NE, removal_order[1]);
+        var.undo(Operator::NE, removal_order[0]);
         assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
     }
 }
@@ -64,12 +64,12 @@ TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
         DYNAMIC_SECTION(fmt::format("Setting lower bound to {}", i))
         {
             // Update
-            var.update(DomainEvent::LowerBound, i);
+            var.update(Operator::GE, i);
             auto r = std::views::iota(i, 4);
             assert_var_state(var, i, 3, std::vector<int>(r.begin(), r.end()),
                              i == 3 ? std::optional<int>{3} : std::nullopt);
             // Undo
-            var.undo(DomainEvent::LowerBound, 0);
+            var.undo(Operator::GE, 0);
             assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
         }
     }
@@ -79,12 +79,12 @@ TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
         DYNAMIC_SECTION(fmt::format("Setting upper bound to {}", i))
         {
             // Update
-            var.update(DomainEvent::UpperBound, i);
+            var.update(Operator::LE, i);
             auto r = std::views::iota(0, i + 1);
             assert_var_state(var, 0, i, std::vector<int>(r.begin(), r.end()),
                              i == 0 ? std::optional<int>{0} : std::nullopt);
             // Undo
-            var.undo(DomainEvent::UpperBound, 3);
+            var.undo(Operator::LE, 3);
             assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
         }
     }
@@ -92,19 +92,19 @@ TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
     SECTION("Updating bounds on var with holes")
     {
         // Update lower bound at a hole
-        var.update(DomainEvent::Removal, 1);
+        var.update(Operator::NE, 1);
         assert_var_state(var, 0, 3, std::vector<int>{0, 2, 3}, std::nullopt);
-        var.update(DomainEvent::LowerBound, 1);
+        var.update(Operator::GE, 1);
         assert_var_state(var, 2, 3, std::vector<int>{2, 3}, std::nullopt);
         // Add another hole
-        var.update(DomainEvent::Removal, 2);
+        var.update(Operator::NE, 2);
         assert_var_state(var, 3, 3, std::vector<int>{3}, 3);
         // Undo in reverse
-        var.undo(DomainEvent::Removal, 2);
+        var.undo(Operator::NE, 2);
         assert_var_state(var, 2, 3, std::vector<int>{2, 3}, std::nullopt);
-        var.undo(DomainEvent::LowerBound, 0);
+        var.undo(Operator::GE, 0);
         assert_var_state(var, 0, 3, std::vector<int>{0, 2, 3}, std::nullopt);
-        var.undo(DomainEvent::Removal, 1);
+        var.undo(Operator::NE, 1);
         assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
     }
 }

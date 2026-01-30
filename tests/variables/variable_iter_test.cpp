@@ -19,17 +19,17 @@ TEST_CASE("DomainIterator", "[variable]")
     SECTION("Init holes")
     {
         VariableSingleHoles var("v", 0, 3);
-        var.update(DomainEvent::Removal, 1);
-        var.update(DomainEvent::Removal, 3);
+        var.update(Operator::NE, 1);
+        var.update(Operator::NE, 3);
         REQUIRE(var.domain() == std::vector<int>{0, 2});
     }
 
     SECTION("Init and undo")
     {
         VariableSingleHoles var("v", 0, 3);
-        var.update(DomainEvent::Removal, 1);
-        var.update(DomainEvent::Removal, 3);
-        var.undo(DomainEvent::Removal, 1);
+        var.update(Operator::NE, 1);
+        var.update(Operator::NE, 3);
+        var.undo(Operator::NE, 1);
         REQUIRE(var.domain() == std::vector<int>{0, 1, 2});
     }
 }

@@ -40,18 +40,3 @@ Literal Literal::invert()
     }
     return Literal(var, invertedOp, constant);
 }
-
-IVariable *Literal::get_variable() const
-{
-    return var;
-}
-
-Operator Literal::get_operator() const
-{
-    return op;
-}
-
-int Literal::get_constant() const
-{
-    return constant;
-}

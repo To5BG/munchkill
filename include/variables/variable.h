@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include "utils/domain_event.h"
+#include "utils/operator.h"
 #include "utils/asserts.h"
 #include "utils/update_result.h"
 
@@ -27,24 +27,24 @@ public:
     std::string id;
 
     /// @brief Update the variable based on the domain event.
-    inline UpdateResult update(DomainEvent event, int value)
+    inline UpdateResult update(Operator event, int value)
     {
         switch (event)
         {
-        case DomainEvent::Assign:
+        case Operator::EQ:
             return assign(value);
-        case DomainEvent::Removal:
+        case Operator::NE:
             return remove(value);
-        case DomainEvent::LowerBound:
+        case Operator::GE:
             return set_lower_bound(value);
-        case DomainEvent::UpperBound:
+        case Operator::LE:
             return set_upper_bound(value);
         }
         return update_result::unchanged();
     }
 
     /// @brief Undo a domain modification
-    virtual void undo(DomainEvent event, int value) = 0;
+    virtual void undo(Operator event, int value) = 0;
 
     /// @brief Get the lower bound of the variable.
     virtual int lower_bound() const = 0;

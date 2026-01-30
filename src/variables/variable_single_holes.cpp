@@ -62,24 +62,24 @@ UpdateResult VariableSingleHoles::assign(int value)
     return update_result::changed(value);
 }
 
-void VariableSingleHoles::undo(DomainEvent event, int value)
+void VariableSingleHoles::undo(Operator event, int value)
 {
     switch (event)
     {
-    case DomainEvent::Removal:
+    case Operator::NE:
         if (value < lb)
             lb = value;
         else if (value > ub)
             ub = value;
         holes.erase(value);
         break;
-    case DomainEvent::LowerBound:
+    case Operator::GE:
         lb = value;
         break;
-    case DomainEvent::UpperBound:
+    case Operator::LE:
         ub = value;
         break;
-    case DomainEvent::Assign:
+    case Operator::EQ:
         break;
     }
     assigned = std::nullopt;

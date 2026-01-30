@@ -25,7 +25,7 @@ private:
 public:
     VariableSingleHoles(std::string id, int lb, int ub);
 
-    void undo(DomainEvent event, int value) override;
+    void undo(Operator event, int value) override;
 
     int lower_bound() const override;
     int upper_bound() const override;
