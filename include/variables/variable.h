@@ -23,6 +23,9 @@ private:
     virtual UpdateResult assign(int value) = 0;
 
 public:
+    /// @brief Identifier/name for the variable.
+    std::string id;
+
     /// @brief Update the variable based on the domain event.
     inline UpdateResult update(DomainEvent event, int value)
     {

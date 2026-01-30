@@ -1,9 +1,10 @@
 #include "variables/variable_single_holes.h"
 #include "utils/asserts.h"
 
-VariableSingleHoles::VariableSingleHoles(int lb, int ub)
+VariableSingleHoles::VariableSingleHoles(std::string id, int lb, int ub)
     : lb(lb), ub(ub), holes({})
 {
+    this->id = id;
     on_bound_change(lb, ub);
 }
 

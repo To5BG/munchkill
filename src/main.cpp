@@ -1,5 +1,4 @@
 #include <fmt/core.h>
-#include <spdlog/spdlog.h>
 #include "constraints/not_equals.h"
 #include "variables/variable_single_holes.h"
 #include "solver.h"
@@ -7,7 +6,7 @@
 
 int main()
 {
-    VariableSingleHoles v1(1, 3), v2(1, 2), v3(1, 2);
+    VariableSingleHoles v1("v1", 1, 3), v2("v2", 1, 2), v3("v3", 1, 2);
     NotEqualsConstraint c1(&v1, &v2), c2(&v2, &v3), c3(&v1, &v3);
 
     DFSBrancher brancher;
@@ -23,13 +22,8 @@ int main()
     bool result = context.solve();
     if (result)
     {
-        fmt::print("v1={}\n", v1.assigned_value().value());
-        fmt::print("v2={}\n", v2.assigned_value().value());
-        fmt::print("v3={}\n", v3.assigned_value().value());
-    }
-    else
-    {
-        spdlog::info("Infeasible.");
+        for (auto &v : {v1, v2, v3})
+            fmt::print("{}={}\n", v.id, v.assigned_value().value());
     }
     return 0;
 }

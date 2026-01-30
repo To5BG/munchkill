@@ -23,7 +23,7 @@ private:
     bool on_bound_change(int lb, int ub);
 
 public:
-    VariableSingleHoles(int lb, int ub);
+    VariableSingleHoles(std::string id, int lb, int ub);
 
     void undo(DomainEvent event, int value) override;
 

@@ -5,7 +5,7 @@
 
 TEST_CASE("VariableSingleHoles", "[variable]")
 {
-    VariableSingleHoles var(0, 3);
+    VariableSingleHoles var("v", 0, 3);
     SECTION("Init")
     {
         assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
@@ -14,7 +14,7 @@ TEST_CASE("VariableSingleHoles", "[variable]")
 
 TEST_CASE("VariableSingleHoles - Removal", "[variable]")
 {
-    VariableSingleHoles var(0, 3);
+    VariableSingleHoles var("v", 0, 3);
     // Removing individual values
     for (int i = 0; i <= 3; i++)
     {
@@ -57,7 +57,7 @@ TEST_CASE("VariableSingleHoles - Removal", "[variable]")
 
 TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
 {
-    VariableSingleHoles var(0, 3);
+    VariableSingleHoles var("v", 0, 3);
     // Update lower bound of continuous variable
     for (int i = 0; i <= 3; i++)
     {
