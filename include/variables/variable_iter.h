@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iterator>
 
 template <typename T>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "variables/variable.h"
 #include <unordered_set>
 #include <optional>
+#include "variables/variable.h"
 #include "variables/variable_iter.h"
 
 class VariableSingleHoles : public IVariable, public Iterable<VariableSingleHoles>

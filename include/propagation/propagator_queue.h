@@ -3,7 +3,9 @@
 #include <queue>
 #include <unordered_set>
 #include <memory>
-#include "constraints/constraint.h"
+
+// Forward declarations
+class IConstraint;
 
 /// @brief Manages the order in which propagators are called for propagation
 class PropagatorQueue

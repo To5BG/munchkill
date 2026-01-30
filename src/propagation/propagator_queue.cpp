@@ -1,5 +1,4 @@
 #include "propagation/propagator_queue.h"
-#include "constraints/constraint.h"
 
 void PropagatorQueue::enqueue(IConstraint *propagator)
 {

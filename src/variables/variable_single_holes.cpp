@@ -1,5 +1,4 @@
 #include "variables/variable_single_holes.h"
-#include "utils/asserts.h"
 
 VariableSingleHoles::VariableSingleHoles(std::string id, int lb, int ub)
     : lb(lb), ub(ub), holes({})

@@ -1,5 +1,4 @@
 #include "branching/dfs_brancher.h"
-#include "solver.h"
 #include "variables/variable.h"
 
 std::optional<Decision> DFSBrancher::next(const std::vector<IVariable *> &vars)

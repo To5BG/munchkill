@@ -1,7 +1,9 @@
 #pragma once
 
-#include "variables/variable.h"
 #include "constraints/literal.h"
+
+// Forward declarations
+class IVariable;
 
 /// @brief Operator overloads for creating literals from variables
 /// These are separated to avoid circular dependencies between variable.h and literal.h

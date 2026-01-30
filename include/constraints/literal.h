@@ -2,9 +2,7 @@
 
 #include "constraints/constraint.h"
 #include "utils/operator.h"
-
-// Forward declarations
-class IVariable;
+#include "variables/variable.h"
 
 class Literal : public IConstraint
 {
@@ -21,4 +19,9 @@ public:
     bool is_violated() const override;
 
     Literal invert();
+
+    std::string to_string() const
+    {
+        return "[" + var->id + " " + std::to_string(op) + " " + std::to_string(constant) + "]";
+    }
 };

@@ -1,7 +1,6 @@
-#include "branching/first_fail_brancher.h"
-#include "solver.h"
-#include "variables/variable.h"
 #include <climits>
+#include "branching/first_fail_brancher.h"
+#include "variables/variable.h"
 
 std::optional<Decision> FirstFailBrancher::next(const std::vector<IVariable *> &vars)
 {
