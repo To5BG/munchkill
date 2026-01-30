@@ -22,6 +22,6 @@ public:
 
     std::string to_string() const
     {
-        return "[" + var->id + " " + std::to_string(op) + " " + std::to_string(constant) + "]";
+        return "[" + var->id + op2str(op) + std::to_string(constant) + "]";
     }
 };

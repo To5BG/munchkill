@@ -1,8 +1,8 @@
+#include <fmt/format.h>
 #include "trail.h"
 #include "variables/variable.h"
 #include "utils/asserts.h"
 #include "constraints/literal.h"
-#include <fmt/format.h>
 
 Trail::Trail()
 {

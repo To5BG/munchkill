@@ -2,8 +2,6 @@
 
 #include <vector>
 #include <string>
-#include "utils/domain_event.h"
-#include "utils/update_result.h"
 #include "constraints/literal.h"
 
 // Forward declarations
@@ -42,6 +40,28 @@ public:
     /// @brief Clear the entire trail
     void clear();
 
-    /// @brief Get a string representation of the trail (for debugging)
-    std::string to_string() const;
+    /// @brief Get a string representation of the trail
+    std::string to_string() const
+    {
+        std::string repr;
+        repr += "{";
+        // Go through each level based on delimiters
+        size_t current_level = 0;
+        size_t next_level_start = (level_delimiter.empty() ? trail.size() : level_delimiter[0]);
+        for (size_t i = 0; i < trail.size(); ++i)
+        {
+            if (i == next_level_start)
+            {
+                repr += " | ";
+                current_level++;
+                if (current_level < level_delimiter.size())
+                    next_level_start = level_delimiter[current_level];
+                else
+                    next_level_start = trail.size();
+            }
+            repr += trail[i].to_string();
+        }
+        repr += "}";
+        return repr;
+    }
 };
