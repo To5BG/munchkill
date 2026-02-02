@@ -44,7 +44,8 @@ public:
     }
 
     /// @brief Undo a domain modification
-    virtual void undo(Operator event, int value) = 0;
+    /// @param entry The domain change to undo
+    virtual void undo(DomainChange entry) = 0;
 
     /// @brief Get the lower bound of the variable.
     virtual int lower_bound() const = 0;

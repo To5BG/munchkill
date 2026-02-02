@@ -24,7 +24,7 @@ TEST_CASE("VariableSingleHoles - Removal", "[variable]")
             var.update(Operator::NE, i);
             REQUIRE(var.domain().size() == 3);
             // Undo
-            var.undo(Operator::NE, i);
+            var.undo(DomainChange{var.lower_bound(), var.upper_bound(), i});
             assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
         }
     }
@@ -45,12 +45,12 @@ TEST_CASE("VariableSingleHoles - Removal", "[variable]")
             var.update(Operator::NE, i);
         assert_var_state(var, 0, 0, std::vector<int>{0}, 0);
         // Undo one - check boundaries and other two holes
-        var.undo(Operator::NE, removal_order.back());
+        var.undo(DomainChange{var.lower_bound(), var.upper_bound(), removal_order.back()});
         REQUIRE_FALSE((var.is_valid(removal_order[0]) || var.is_valid(removal_order[1])));
         assert_var_state(var, 0, removal_order.back(), std::vector<int>{0, removal_order.back()}, std::nullopt);
         // Undo the rest
-        var.undo(Operator::NE, removal_order[1]);
-        var.undo(Operator::NE, removal_order[0]);
+        var.undo(DomainChange{var.lower_bound(), var.upper_bound(), removal_order[1]});
+        var.undo(DomainChange{var.lower_bound(), var.upper_bound(), removal_order[0]});
         assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
     }
 }
@@ -69,7 +69,7 @@ TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
             assert_var_state(var, i, 3, std::vector<int>(r.begin(), r.end()),
                              i == 3 ? std::optional<int>{3} : std::nullopt);
             // Undo
-            var.undo(Operator::GE, 0);
+            var.undo(DomainChange{0, var.upper_bound(), std::nullopt});
             assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
         }
     }
@@ -84,7 +84,7 @@ TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
             assert_var_state(var, 0, i, std::vector<int>(r.begin(), r.end()),
                              i == 0 ? std::optional<int>{0} : std::nullopt);
             // Undo
-            var.undo(Operator::LE, 3);
+            var.undo(DomainChange{var.lower_bound(), 3, std::nullopt});
             assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
         }
     }
@@ -100,11 +100,11 @@ TEST_CASE("VariableSingleHoles - Bounds", "[variable]")
         var.update(Operator::NE, 2);
         assert_var_state(var, 3, 3, std::vector<int>{3}, 3);
         // Undo in reverse
-        var.undo(Operator::NE, 2);
+        var.undo(DomainChange{var.lower_bound(), var.upper_bound(), 2});
         assert_var_state(var, 2, 3, std::vector<int>{2, 3}, std::nullopt);
-        var.undo(Operator::GE, 0);
+        var.undo(DomainChange{0, var.upper_bound(), std::nullopt});
         assert_var_state(var, 0, 3, std::vector<int>{0, 2, 3}, std::nullopt);
-        var.undo(Operator::NE, 1);
+        var.undo(DomainChange{var.lower_bound(), var.upper_bound(), 1});
         assert_var_state(var, 0, 3, std::vector<int>{0, 1, 2, 3}, std::nullopt);
     }
 }

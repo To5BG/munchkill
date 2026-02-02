@@ -29,7 +29,7 @@ TEST_CASE("DomainIterator", "[variable]")
         VariableSingleHoles var("v", 0, 3);
         var.update(Operator::NE, 1);
         var.update(Operator::NE, 3);
-        var.undo(Operator::NE, 1);
+        var.undo(DomainChange{var.lower_bound(), var.upper_bound(), 1});
         REQUIRE(var.domain() == std::vector<int>{0, 1, 2});
     }
 }

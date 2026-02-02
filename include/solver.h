@@ -4,7 +4,7 @@
 #include "constraints/constraint.h"
 #include "propagation/propagator_queue.h"
 #include "propagation/propagation_status.h"
-#include "trail.h"
+#include "trail_assignment.h"
 
 // Forward declarations
 class IVariable;
@@ -26,7 +26,7 @@ class Solver
 private:
     std::vector<IVariable *> variables;
     std::vector<IConstraint *> constraints;
-    Trail trail;
+    Trail<AssignmentTrailEntry, Literal> assignment_trail;
     PropagatorQueue propagator_queue;
     IBrancher *brancher;
 
@@ -45,6 +45,8 @@ public:
         {
             if (constraint->is_violated())
             {
+                // TODO: Add name/id to constraints
+                spdlog::debug("Constraint violated!");
                 return true;
             }
         }

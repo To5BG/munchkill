@@ -8,21 +8,34 @@ struct EmptyDomain
 {
 };
 
+/// @brief Information about a domain change: the old bounds before the update
+struct DomainChange
+{
+    int old_lb;                     // Previous lower bound
+    int old_ub;                     // Previous upper bound
+    std::optional<int> old_removed; // Previously removed value, if any
+};
+
 /// @brief Result of a domain update operation using std::expected
-/// Success: std::optional<int> where nullopt = no change, int = trail value
+/// Success: std::optional<DomainChange> where nullopt = no change, DomainChange = domain info for recovery
 /// Failure: EmptyDomain indicating the domain became empty
-using UpdateResult = std::expected<std::optional<int>, EmptyDomain>;
+using UpdateResult = std::expected<std::optional<DomainChange>, EmptyDomain>;
 
 namespace update_result
 {
     inline UpdateResult unchanged()
     {
-        return std::optional<int>{std::nullopt};
+        return std::optional<DomainChange>{std::nullopt};
     }
 
-    inline UpdateResult changed(int trail_value)
+    inline UpdateResult changed(int old_lb, int old_ub)
     {
-        return std::optional<int>{trail_value};
+        return std::optional<DomainChange>{DomainChange{old_lb, old_ub, std::nullopt}};
+    }
+
+    inline UpdateResult changed(int old_lb, int old_ub, int old_removed)
+    {
+        return std::optional<DomainChange>{DomainChange{old_lb, old_ub, old_removed}};
     }
 
     inline UpdateResult empty_domain()

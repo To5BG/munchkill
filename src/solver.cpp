@@ -21,7 +21,7 @@ bool Solver::solve()
     // Main loop
     while (true)
     {
-        spdlog::debug("Trail state: {}", trail.to_string());
+        spdlog::debug("Trail state: {}", assignment_trail.to_string());
         // TODO: add propagation
         if (!is_conflicting())
         {
@@ -36,17 +36,20 @@ bool Solver::solve()
             else
             {
                 spdlog::debug("Decision at level {}: {} = {}",
-                              trail.get_current_level(), branch_decision->variable->id, branch_decision->value);
+                              assignment_trail.get_current_level(), branch_decision->variable->id, branch_decision->value);
             }
             // Make decision
-            trail.next_decision_level();
+            assignment_trail.next_decision_level();
             // Check for conflict upon decision
-            if (!trail.push(*branch_decision->variable == branch_decision->value))
+            if (!assignment_trail.push(*branch_decision->variable == branch_decision->value))
+            {
+                spdlog::debug("Empty domain detected!");
                 solver_state = SolverState::Infeasible;
+            }
         }
         else
         {
-            int curr_level = trail.get_current_level();
+            int curr_level = assignment_trail.get_current_level();
             // Infeasible if at root
             if (curr_level == 0)
             {
@@ -54,11 +57,11 @@ bool Solver::solve()
                 solver_state = SolverState::Infeasible;
                 return false;
             }
-            Literal last_decision = trail.backtrack(curr_level - 1);
+            Literal last_decision = assignment_trail.backtrack(curr_level - 1);
             spdlog::debug("Backtracking to level {}: Inverting decision {} = {}",
-                          trail.get_current_level(), last_decision.var->id, last_decision.constant);
+                          assignment_trail.get_current_level(), last_decision.var->id, last_decision.constant);
             // Invert last decision as a propagation
-            trail.push(*last_decision.var != last_decision.constant);
+            assignment_trail.push(*last_decision.var != last_decision.constant);
             solver_state = SolverState::Solving;
         }
     }

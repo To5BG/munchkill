@@ -2,34 +2,40 @@
 
 #include <vector>
 #include <string>
-#include "constraints/literal.h"
-
-// Forward declarations
-class IVariable;
+#include "utils/asserts.h"
 
 /// @brief Trail helper class to manage the sequence of domain modifications
-/// This will be extended later to handle propagation levels and other features
+template <typename T, typename U>
 class Trail
 {
 private:
-    std::vector<Literal> trail;
+    std::vector<T> trail;
     std::vector<unsigned int> level_delimiter; // Marks where each decision level starts
 
 public:
-    Trail();
+    Trail() = default;
 
-    /// @brief Add a new entry to the trail
-    /// @param literal The literal representing the domain modification
+    /// @brief Add a new entry to the trail (generic version)
+    /// @param entry The entry to add
     /// @return false if the domain became empty, else true
-    bool push(Literal literal);
+    bool push(const U &entry)
+    {
+        trail.emplace_back(entry);
+        return true;
+    }
 
     /// @brief Increase the decision level
-    void next_decision_level();
+    void next_decision_level()
+    {
+        assert_err(level_delimiter.empty() || level_delimiter.back() < trail.size(),
+                   "Cannot have an empty decision level");
+        level_delimiter.push_back(trail.size());
+    }
 
     /// @brief Backtrack to a specific decision level
     /// @param target_level The level to backtrack to
     /// @return The decision at the target level
-    Literal backtrack(unsigned int target_level);
+    U backtrack(unsigned int target_level);
 
     /// @brief Get the current decision level
     unsigned int get_current_level() const { return level_delimiter.size(); }
@@ -38,7 +44,11 @@ public:
     size_t size() const { return trail.size(); }
 
     /// @brief Clear the entire trail
-    void clear();
+    void clear()
+    {
+        trail.clear();
+        level_delimiter.clear();
+    }
 
     /// @brief Get a string representation of the trail
     std::string to_string() const
@@ -63,5 +73,11 @@ public:
         }
         repr += "}";
         return repr;
+    }
+
+    /// @brief Get the level delimiters
+    std::vector<unsigned int> get_markers() const
+    {
+        return level_delimiter;
     }
 };
