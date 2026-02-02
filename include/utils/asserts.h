@@ -25,8 +25,9 @@ inline void assert_err(bool expr, const char *msg)
     if (!expr)
     {
         spdlog::error("{}", msg);
-        std::set_terminate([]
-                           { std::_Exit(EXIT_FAILURE); });
-        std::terminate();
+        throw std::runtime_error(msg);
+        // std::set_terminate([]
+        //                    { std::_Exit(EXIT_FAILURE); });
+        // std::terminate();
     }
 }

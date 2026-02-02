@@ -11,23 +11,13 @@ TEST_CASE("Trail", "[component]")
     {
         Trail<AssignmentTrailEntry, Literal> trail;
         VariableSingleHoles var("v", 0, 10);
-
-        int n = GENERATE(take(2, random(1, 5)));
-        // for (int i = 0; i < n; i++)
-        // {
-        //     trail.next_decision_level();
-        //     Literal l = Literal(
-        //         &var,
-        //         GENERATE(Operator::NE, Operator::GE, Operator::LE, Operator::EQ),
-        //         GENERATE(take(1, random(0, 10))));
-        //     trail.push(l);
-        // }
         trail.next_decision_level();
-        trail.push(var <= 0);
-        trail.next_decision_level();
-        trail.push(var == 3);
-
-        INFO(fmt::format("{}", trail.to_string()));
+        Literal l = Literal(
+            &var,
+            GENERATE(Operator::NE, Operator::GE, Operator::LE, Operator::EQ),
+            GENERATE(take(10, random(0, 10))));
+        trail.push(l);
+        INFO(l.to_string());
         trail.backtrack(0);
         assert_var_state(var, 0, 10, std::vector<int>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, std::nullopt);
     }
