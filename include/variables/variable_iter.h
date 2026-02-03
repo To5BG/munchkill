@@ -73,6 +73,7 @@ public:
                                        static_cast<const Derived *>(this)->upper_bound() + 1);
     }
 
+    /// @brief Extract all domain values into a vector
     std::vector<int> domain() const
     {
         const Derived *self = static_cast<const Derived *>(this);

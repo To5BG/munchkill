@@ -1,8 +1,8 @@
 #include "constraints/not_equals.h"
 #include "variables/variable.h"
 
-NotEqualsConstraint::NotEqualsConstraint(IVariable *lhs, IVariable *rhs) : lhs(lhs),
-                                                                           rhs(rhs)
+NotEqualsConstraint::NotEqualsConstraint(IVariable *lhs, IVariable *rhs)
+    : lhs(lhs), rhs(rhs)
 {
 }
 

@@ -33,7 +33,7 @@ inline bool Trail<AssignmentTrailEntry, Literal>::push(const Literal &lit)
     if (result.value().has_value())
     {
         const DomainChange &change = result.value().value();
-        trail.emplace_back(AssignmentTrailEntry(lit, change));
+        trail.emplace_back(lit, change);
     }
     return true;
 }
@@ -43,15 +43,16 @@ inline Literal Trail<AssignmentTrailEntry, Literal>::backtrack(unsigned int targ
 {
     assert_err(target_level < level_delimiter.size(), "Cannot backtrack to a non-existent level");
     size_t marker = level_delimiter[target_level];
-    AssignmentTrailEntry last_entry = trail.back();
+    Literal last_literal = trail.back().literal;
     while (trail.size() > marker)
     {
-        last_entry = trail.back();
+        const AssignmentTrailEntry &entry = trail.back();
+        last_literal = entry.literal;
         // Revert previous state
-        last_entry.literal.var->undo(last_entry.delta);
+        last_literal.var->undo(entry.delta);
         trail.pop_back();
     }
     // Sync delimiter vector
     level_delimiter.resize(target_level);
-    return last_entry.literal;
+    return last_literal;
 }

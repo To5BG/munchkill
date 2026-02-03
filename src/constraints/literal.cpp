@@ -1,8 +1,7 @@
 #include "constraints/literal.h"
 
-Literal::Literal(IVariable *var, Operator op, int constant) : var(var),
-                                                              op(op),
-                                                              constant(constant)
+Literal::Literal(IVariable *var, Operator op, int constant)
+    : var(var), op(op), constant(constant)
 {
 }
 
