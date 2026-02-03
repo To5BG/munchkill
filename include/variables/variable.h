@@ -8,6 +8,8 @@
 /// @brief Interface for integer variables.
 class IVariable
 {
+public:
+    virtual ~IVariable() = default;
 
 private:
     /// @brief Remove a value from the variable's domain.

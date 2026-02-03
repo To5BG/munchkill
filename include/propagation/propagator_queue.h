@@ -15,7 +15,12 @@ private:
     std::unordered_set<IConstraint *> in_queue; // Track which propagators are already queued
 
 public:
-    PropagatorQueue() = default;
+    PropagatorQueue()
+    {
+        // Pre-allocate
+        in_queue.reserve(64);
+    }
+    ~PropagatorQueue() = default;
 
     /// @brief Add a propagator to the queue if it's not already queued
     /// @param propagator The propagator to add

@@ -13,7 +13,13 @@ private:
     std::vector<unsigned int> level_delimiter; // Marks where each decision level starts
 
 public:
-    Trail() = default;
+    Trail()
+    {
+        // Pre-allocate
+        trail.reserve(128);
+        level_delimiter.reserve(24);
+    }
+    ~Trail() = default;
 
     /// @brief Add a new entry to the trail (generic version)
     /// @param entry The entry to add
