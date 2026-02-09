@@ -18,7 +18,7 @@ enum Operator
 };
 
 constexpr std::array<const char *, 4> OperatorNames{
-    " = ", " != ", " <= ", " >= "};
+    " = ", " != ", " >= ", " <= "};
 
 constexpr std::string op2str(Operator op)
 {
